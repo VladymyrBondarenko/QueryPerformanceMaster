@@ -1,6 +1,6 @@
 ﻿namespace SqlQueryPerformanceProfiler.Profilers
 {
-    public class SqlQueryLoadParams
+    public class LoadProfilerParams
     {
         public string ConnectionString { get; set; }
 
@@ -9,5 +9,7 @@
         public int IterationsNumber { get; set; }
 
         public int ThreadsNumber { get; set; }
+
+        public int DelayMiliseconds { get; set; }
     }
 }

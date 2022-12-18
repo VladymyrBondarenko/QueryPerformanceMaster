@@ -1,6 +1,6 @@
-﻿namespace SqlQueryPerformanceProfiler.Profilers
+﻿namespace SqlQueryPerformanceProfiler.Profilers.LoadResults
 {
-    public class SqlQueryLoadError
+    public class LoadProfilerError
     {
         public string ErrorMessage { get; set; }
 

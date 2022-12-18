@@ -9,12 +9,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MathNet.Numerics.Statistics;
+using SqlQueryPerformanceProfiler.Profilers.Interfaces;
+using SqlQueryPerformanceProfiler.Profilers.LoadResults;
 
 namespace SqlQueryPerformanceProfiler.Profilers
 {
     public class MssqlLoadProfiler : ILoadProfiler
     {
-        private readonly SqlQueryLoadParams _sqlQueryLoadParams;
+        private readonly LoadProfilerParams _sqlQueryLoadParams;
 
         private static readonly Regex _queryLogicalReads = new Regex(
             @"(?:Table (\'\w{1,}\'|'#\w{1,}\'|'##\w{1,}\'). Scan count \d{1,}, logical reads )(\d{1,})", RegexOptions.Compiled);
@@ -25,20 +27,14 @@ namespace SqlQueryPerformanceProfiler.Profilers
 
         private const string _statisticsCommand = "SET STATISTICS IO ON; SET STATISTICS TIME ON;";
 
-        public MssqlLoadProfiler(SqlQueryLoadParams sqlQueryLoadSettings)
+        public MssqlLoadProfiler(LoadProfilerParams sqlQueryLoadSettings)
         {
             _sqlQueryLoadParams = sqlQueryLoadSettings;
         }
 
-        public SqlQueryLoadResult ExecuteLoad()
+        public async Task<LoadProfilerResult> ExecuteQueryLoadAsync(CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(_sqlQueryLoadParams.Query) ||
-                string.IsNullOrWhiteSpace(_sqlQueryLoadParams.ConnectionString))
-            {
-                return null;
-            }
-
-            var sqlQueryLoadResult = new SqlQueryLoadResult();
+            var sqlQueryLoadResult = new LoadProfilerResult();
 
             SqlInfoMessageEventHandler infoMessageHandler = (sender, e) =>
             {
@@ -48,7 +44,7 @@ namespace SqlQueryPerformanceProfiler.Profilers
 
                     if (matches.Length > 1)
                     {
-                        sqlQueryLoadResult.LogicalReads.Add(Convert.ToInt32(matches[2], CultureInfo.InvariantCulture));
+                        sqlQueryLoadResult.LogicalReads = Convert.ToInt32(matches[2], CultureInfo.InvariantCulture);
                         continue;
                     }
 
@@ -56,8 +52,8 @@ namespace SqlQueryPerformanceProfiler.Profilers
 
                     if (matches.Length > 1)
                     {
-                        sqlQueryLoadResult.CpuTimes.Add(Convert.ToInt32(matches[1], CultureInfo.InvariantCulture));
-                        sqlQueryLoadResult.ElapsedTimes.Add(Convert.ToInt32(matches[2], CultureInfo.InvariantCulture));
+                        sqlQueryLoadResult.CpuTime = Convert.ToInt32(matches[1], CultureInfo.InvariantCulture);
+                        sqlQueryLoadResult.ElapsedTime = Convert.ToInt32(matches[2], CultureInfo.InvariantCulture);
                     }
                 }
             };
@@ -66,82 +62,43 @@ namespace SqlQueryPerformanceProfiler.Profilers
             var statCommand = new SqlCommand();
             var sw = new Stopwatch();
 
-            for (int i = 0; i < _sqlQueryLoadParams.IterationsNumber; i++)
+            try
             {
-                try
+                await sqlConnection.OpenAsync();
+
+                statCommand = sqlConnection.CreateCommand();
+                statCommand.CommandText = _statisticsCommand;
+                statCommand.Connection.InfoMessage += infoMessageHandler;
+                await statCommand.ExecuteNonQueryAsync();
+
+                var query = sqlConnection.CreateCommand();
+                query.CommandText = _sqlQueryLoadParams.Query;
+
+                sw.Start();
+
+                await query.ExecuteNonQueryAsync();
+
+                sw.Stop();
+            }
+            catch (Exception ex)
+            {
+                sqlQueryLoadResult.SqlQueryLoadError = ex.Message;
+                sw.Stop();
+            }
+            finally
+            {
+                if (sqlConnection != null)
                 {
-                    sqlConnection.Open();
-
-                    statCommand = sqlConnection.CreateCommand();
-                    statCommand.CommandText = _statisticsCommand;
-                    statCommand.Connection.InfoMessage += infoMessageHandler;
-                    statCommand.ExecuteNonQuery();
-
-                    var query = sqlConnection.CreateCommand();
-                    query.CommandText = _sqlQueryLoadParams.Query;
-
-                    sw.Start();
-
-                    query.ExecuteNonQuery();
-
-                    sw.Stop();
+                    sqlConnection.InfoMessage -= infoMessageHandler;
+                    await sqlConnection.CloseAsync();
                 }
-                catch (Exception ex)
-                {
-                    sqlQueryLoadResult.SqlQueryLoadErrors.Add(new SqlQueryLoadError { ErrorMessage = ex.Message });
-                    sw.Stop();
-                }
-                finally
-                {
-                    if (sqlConnection != null)
-                    {
-                        sqlConnection.InfoMessage -= infoMessageHandler;
-                        sqlConnection.Close();
-                    }
-                }
-
-                sqlQueryLoadResult.ExecTime += sw.Elapsed;
-
-                sw.Reset();
             }
 
-            return FillQueryLoadResult(sqlQueryLoadResult);
-        }
+            sqlQueryLoadResult.ExecTime = sw.Elapsed;
 
-        private SqlQueryLoadResult FillQueryLoadResult(SqlQueryLoadResult queryLoadResult)
-        {
-            // calc total
-            queryLoadResult.CpuTimeTotal = queryLoadResult.CpuTimes.Sum() / 1000;
-            queryLoadResult.LogicalReadsTotal = queryLoadResult.LogicalReads.Sum();
+            sw.Reset();
 
-            // calc avg
-            queryLoadResult.CpuTimeAvg = queryLoadResult.CpuTimeTotal / _sqlQueryLoadParams.IterationsNumber;
-            queryLoadResult.LogicalReadsAvg = queryLoadResult.LogicalReadsTotal / _sqlQueryLoadParams.IterationsNumber;
-
-            // calc time
-            queryLoadResult.ElapsedTimeTotal = queryLoadResult.ElapsedTimes.Sum() / 1000;
-
-            // calc mod
-            queryLoadResult.CpuTimeMod = queryLoadResult.CpuTimes.Median();
-            queryLoadResult.LogicalReadsMod = queryLoadResult.LogicalReads.Median();
-            queryLoadResult.ElapsedTimeMod = queryLoadResult.ElapsedTimes.Median();
-
-            // calc errors
-            var groupedErrors = queryLoadResult.SqlQueryLoadErrors.GroupBy(x => x.ErrorMessage);
-
-            queryLoadResult.SqlQueryLoadErrors = new List<SqlQueryLoadError>();
-            foreach (var error in groupedErrors)
-            {
-                queryLoadResult.SqlQueryLoadErrors.Add(new SqlQueryLoadError
-                {
-                    ErrorMessage = error.Key,
-                    Count = error.Count()
-                });
-            }
-
-            queryLoadResult.IterationCompleted = _sqlQueryLoadParams.IterationsNumber;
-
-            return queryLoadResult;
+            return sqlQueryLoadResult;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace SqlQueryPerformanceProfiler.Executers
 
             for (int i = 1; i <= _sqlQueryLoadParams.IterationsNumber; i++)
             {
-                Thread.Sleep(_sqlQueryLoadParams.DelayMiliseconds);
+                await Task.Delay(_sqlQueryLoadParams.DelayMiliseconds);
                 var loadResult = await _loadProfiler.ExecuteQueryLoadAsync(cancellationToken);
                 loadProfilerResult.Add(loadResult);
             }

@@ -21,7 +21,7 @@ var mssqlLoadProfiler = new MssqlLoadProfiler(loadParams);
 
 //loadParams.DelayMiliseconds = 10;
 //var seqProfilerExecuter = new SequentialProfilerExecuterWithDelay(loadParams, mssqlLoadProfiler);
-//var loadResult = seqProfilerExecuter.ExecuteLoad();
+//var loadResult = await seqProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
 
 loadParams.ThreadsNumber = 2;
 var parallelProfilerExecuter = new ParallelProfilerExecuter(loadParams, mssqlLoadProfiler);

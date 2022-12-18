@@ -1,11 +1,11 @@
-﻿# Sql Query Performance Profiler
+# Sql Query Performance Profiler
 
 Expected Features:
 
 1. Mssql/postgres/oracle/mongo/...
 2. Cross-platform
 3. Computed values: 
-	1. Сpu time, logical reads, elapsed time:
+	1. �pu time, logical reads, elapsed time:
 		1.1. avg time
 		1.2. mod time
 		1.3. standard deviation

@@ -5,7 +5,12 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlQueryPerformanceProfiler", "SqlQueryPerformanceProfiler\SqlQueryPerformanceProfiler.csproj", "{0D507C6C-A159-4DD9-86AC-124E881AD1EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlQueryPerformanceProfiler.Console", "SqlQueryPerformanceProfiler.Console\SqlQueryPerformanceProfiler.Console.csproj", "{02154ADD-F298-4AFF-9FBB-9F4E871D0947}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlQueryPerformanceProfiler.Console", "SqlQueryPerformanceProfiler.Console\SqlQueryPerformanceProfiler.Console.csproj", "{02154ADD-F298-4AFF-9FBB-9F4E871D0947}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{959D7969-77F8-4DF9-B3B6-1A07CAA8AF10}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

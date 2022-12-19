@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace SqlQueryPerformanceProfiler.Executers
 {
-    public class ParallelProfilerExecuter : IProfilerExecuter
+    internal class ParallelProfilerExecuter : IProfilerExecuter
     {
         private readonly LoadProfilerParams _sqlQueryLoadParams;
         private readonly ILoadProfiler _loadProfiler;

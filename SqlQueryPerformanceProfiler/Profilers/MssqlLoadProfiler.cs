@@ -14,7 +14,7 @@ using SqlQueryPerformanceProfiler.Profilers.LoadResults;
 
 namespace SqlQueryPerformanceProfiler.Profilers
 {
-    public class MssqlLoadProfiler : ILoadProfiler
+    internal class MsSqlLoadProfiler : ILoadProfiler
     {
         private readonly LoadProfilerParams _sqlQueryLoadParams;
 
@@ -27,7 +27,7 @@ namespace SqlQueryPerformanceProfiler.Profilers
 
         private const string _statisticsCommand = "SET STATISTICS IO ON; SET STATISTICS TIME ON;";
 
-        public MssqlLoadProfiler(LoadProfilerParams sqlQueryLoadSettings)
+        public MsSqlLoadProfiler(LoadProfilerParams sqlQueryLoadSettings)
         {
             _sqlQueryLoadParams = sqlQueryLoadSettings;
         }
@@ -58,6 +58,7 @@ namespace SqlQueryPerformanceProfiler.Profilers
                 }
             };
 
+            // TODO: maybe change to pass sql connection from outside
             using var sqlConnection = new SqlConnection(_sqlQueryLoadParams.ConnectionString);
             var statCommand = new SqlCommand();
             var sw = new Stopwatch();

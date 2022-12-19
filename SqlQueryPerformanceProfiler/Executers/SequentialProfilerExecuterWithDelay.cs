@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SqlQueryPerformanceProfiler.Executers
 {
-    public class SequentialProfilerExecuterWithDelay : IProfilerExecuter
+    internal class SequentialProfilerExecuterWithDelay : IProfilerExecuter
     {
         private readonly LoadProfilerParams _sqlQueryLoadParams;
         private readonly ILoadProfiler _loadProfiler;

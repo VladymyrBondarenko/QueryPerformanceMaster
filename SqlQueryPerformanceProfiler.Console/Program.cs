@@ -14,7 +14,7 @@ var loadParams = new LoadProfilerParams
     Query = "select DepartmentTitle from Departments"
 };
 
-var mssqlLoadProfiler = new MssqlLoadProfiler(loadParams);
+//var mssqlLoadProfiler = new MssqlLoadProfiler(loadParams);
 
 //var seqProfilerExecuter = new SequentialProfilerExecuter(loadParams, mssqlLoadProfiler);
 //var loadResult = seqProfilerExecuter.ExecuteLoad();
@@ -24,8 +24,17 @@ var mssqlLoadProfiler = new MssqlLoadProfiler(loadParams);
 //var loadResult = await seqProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
 
 loadParams.ThreadsNumber = 2;
-var parallelProfilerExecuter = new ParallelProfilerExecuter(loadParams, mssqlLoadProfiler);
-var loadResult = await parallelProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
+loadParams.SqlProvider = SqlProvider.SqlServer;
+loadParams.ExecuterType = ProfilerExecuterType.ParallerExecutor;
+
+var loadProfilersFactory = new LoadProfilersFactory();
+var executorsFactory = new LoadProfilerExecutorsFactory(loadProfilersFactory);
+
+var parallelProfilerExecuter = executorsFactory.GetProfilerExecuter(loadParams);
+var loadResult =  await parallelProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
+
+//var parallelProfilerExecuter = new ParallelProfilerExecuter(loadParams, mssqlLoadProfiler);
+//var loadResult = await parallelProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
 
 Console.WriteLine(
     $@"

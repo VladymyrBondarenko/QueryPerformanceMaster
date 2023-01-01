@@ -1,5 +1,5 @@
 ﻿using SqlQueryPerformanceProfiler.Executers.ExecResults;
-using SqlQueryPerformanceProfiler.Profilers.Interfaces;
+using SqlQueryPerformanceProfiler.Profilers.LoadProfilers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +10,12 @@ namespace SqlQueryPerformanceProfiler.Profilers
 {
     public class LoadProfilersFactory : ILoadProfilersFactory
     {
-        public ILoadProfiler GetLoadProfiler(LoadProfilerParams sqlQueryLoadSettings)
+        public ILoadProfiler GetLoadProfiler(SqlConnectionParams connectionParams)
         {
-            switch (sqlQueryLoadSettings.SqlProvider)
+            switch (connectionParams.SqlProvider)
             {
                 case SqlProvider.SqlServer:
-                    return (ILoadProfiler)Activator.CreateInstance(typeof(MsSqlLoadProfiler), sqlQueryLoadSettings);
+                    return (ILoadProfiler)Activator.CreateInstance(typeof(MsSqlLoadProfiler), connectionParams);
                 default:
                     throw new NotImplementedException();
             }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SqlQueryPerformanceProfiler.Executers.ExecResults;
 
-namespace SqlQueryPerformanceProfiler.Executers.Interfaces
+namespace SqlQueryPerformanceProfiler.Executers.ProfilerExecuters
 {
     public interface IProfilerExecuter
     {

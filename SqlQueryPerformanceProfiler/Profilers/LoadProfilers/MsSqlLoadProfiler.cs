@@ -9,14 +9,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MathNet.Numerics.Statistics;
-using SqlQueryPerformanceProfiler.Profilers.Interfaces;
 using SqlQueryPerformanceProfiler.Profilers.LoadResults;
 
-namespace SqlQueryPerformanceProfiler.Profilers
+namespace SqlQueryPerformanceProfiler.Profilers.LoadProfilers
 {
     internal class MsSqlLoadProfiler : ILoadProfiler
     {
-        private readonly LoadProfilerParams _sqlQueryLoadParams;
+        private readonly SqlConnectionParams _connectionParams;
 
         private static readonly Regex _queryLogicalReads = new Regex(
             @"(?:Table (\'\w{1,}\'|'#\w{1,}\'|'##\w{1,}\'). Scan count \d{1,}, logical reads )(\d{1,})", RegexOptions.Compiled);
@@ -27,12 +26,13 @@ namespace SqlQueryPerformanceProfiler.Profilers
 
         private const string _statisticsCommand = "SET STATISTICS IO ON; SET STATISTICS TIME ON;";
 
-        public MsSqlLoadProfiler(LoadProfilerParams sqlQueryLoadSettings)
+        public MsSqlLoadProfiler(SqlConnectionParams connectionParams)
         {
-            _sqlQueryLoadParams = sqlQueryLoadSettings;
+            _connectionParams = connectionParams;
         }
 
-        public async Task<LoadProfilerResult> ExecuteQueryLoadAsync(CancellationToken cancellationToken)
+        public async Task<LoadProfilerResult> ExecuteQueryLoadAsync(string query,
+            CancellationToken cancellationToken = default)
         {
             var sqlQueryLoadResult = new LoadProfilerResult();
 
@@ -59,7 +59,7 @@ namespace SqlQueryPerformanceProfiler.Profilers
             };
 
             // TODO: maybe change to pass sql connection from outside
-            using var sqlConnection = new SqlConnection(_sqlQueryLoadParams.ConnectionString);
+            using var sqlConnection = new SqlConnection(_connectionParams.ConnectionString);
             var statCommand = new SqlCommand();
             var sw = new Stopwatch();
 
@@ -72,12 +72,12 @@ namespace SqlQueryPerformanceProfiler.Profilers
                 statCommand.Connection.InfoMessage += infoMessageHandler;
                 await statCommand.ExecuteNonQueryAsync();
 
-                var query = sqlConnection.CreateCommand();
-                query.CommandText = _sqlQueryLoadParams.Query;
+                var cmd = sqlConnection.CreateCommand();
+                cmd.CommandText = query;
 
                 sw.Start();
 
-                await query.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync();
 
                 sw.Stop();
             }

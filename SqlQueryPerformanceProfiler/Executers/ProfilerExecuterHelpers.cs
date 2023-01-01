@@ -12,7 +12,7 @@ namespace SqlQueryPerformanceProfiler.Executers
 {
     internal class ProfilerExecuterHelpers
     {
-        public static LoadExecutedResult FillLoadExecutedResult(LoadProfilerParams sqlQueryLoadSettings, 
+        public static LoadExecutedResult FillLoadExecutedResult(int iterationNumber, 
             List<LoadProfilerResult> loadProfilerResults)
         {
             var res = new LoadExecutedResult();
@@ -33,10 +33,10 @@ namespace SqlQueryPerformanceProfiler.Executers
             }
 
             // calc avg
-            res.CpuTimeAvg = res.CpuTimeTotal / sqlQueryLoadSettings.IterationsNumber;
-            res.LogicalReadsAvg = res.LogicalReadsTotal / sqlQueryLoadSettings.IterationsNumber;
-            res.ElapsedTimeAvg = res.ElapsedTimeTotal/ sqlQueryLoadSettings.IterationsNumber;
-            res.ExecTimeAvg = res.ExecTime / sqlQueryLoadSettings.IterationsNumber;
+            res.CpuTimeAvg = res.CpuTimeTotal / iterationNumber;
+            res.LogicalReadsAvg = res.LogicalReadsTotal / iterationNumber;
+            res.ElapsedTimeAvg = res.ElapsedTimeTotal/ iterationNumber;
+            res.ExecTimeAvg = res.ExecTime / iterationNumber;
 
             // calc mod
             var execTimeMiliseconds = execTimes.Select(x => x.TotalMilliseconds).ToList();
@@ -64,7 +64,7 @@ namespace SqlQueryPerformanceProfiler.Executers
             }
 
             // TODO: edit when add cancelation
-            res.IterationCompleted = sqlQueryLoadSettings.IterationsNumber;
+            res.IterationCompleted = iterationNumber;
 
             return res;
         }

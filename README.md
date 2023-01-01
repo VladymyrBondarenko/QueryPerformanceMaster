@@ -22,6 +22,13 @@ Expected Features:
 	2. Entering an execution query limit
 	3. Entering number of iterations
 	4. Entering number of threads
+	5. ProfilerExecuters:
+		1. Parallel Executer
+		2. Sequential Executer
+		3. Sequential Executer Before First Error Executer
+		4. Sequential Executer With Delay
+		5. Sequential Executer With Elapsed Time Limit
+		.... ?
 5. Statictics
 	1. In graphics
 	2. In dashboards

@@ -1,40 +1,59 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using SqlQueryPerformanceProfiler.Executers;
+using SqlQueryPerformanceProfiler.Executers.ProfilerExecuters;
+using SqlQueryPerformanceProfiler.Executers.ProfilerExecuters.ParallelProfilerExecuter;
+using SqlQueryPerformanceProfiler.Executers.ProfilerExecuters.SequentialProfilerExecuter;
+using SqlQueryPerformanceProfiler.Executers.ProfilerExecuters.SequentialProfilerExecutorWithTimeLimit;
 using SqlQueryPerformanceProfiler.Profilers;
+using SqlQueryPerformanceProfiler.Profilers.LoadProfilers;
 
 
+//var query =
+//    @"
+//    select * from sales.orders 
+//    where customer_id = 
+//        (select max(customer_id) from sales.customers t where t.first_name = 'Tameka' and t.last_name = 'Fisher')";
+
+var query =
+    @"
+    select sales.orders.order_id 
+    from sales.customers
+    join sales.orders on sales.orders.customer_id = sales.customers.customer_id";
 
 
-
-var loadParams = new LoadProfilerParams
+var connectionParams = new SqlConnectionParams
 {
-    ConnectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=PersonnelManagementDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
-    IterationsNumber = 5,
-    ThreadsNumber = 2,
-    Query = "select DepartmentTitle from Departments"
+    ConnectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BikeStores",
+    SqlProvider = SqlProvider.SqlServer
 };
 
-//var mssqlLoadProfiler = new MssqlLoadProfiler(loadParams);
-
-//var seqProfilerExecuter = new SequentialProfilerExecuter(loadParams, mssqlLoadProfiler);
-//var loadResult = seqProfilerExecuter.ExecuteLoad();
-
-//loadParams.DelayMiliseconds = 10;
-//var seqProfilerExecuter = new SequentialProfilerExecuterWithDelay(loadParams, mssqlLoadProfiler);
-//var loadResult = await seqProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
-
-loadParams.ThreadsNumber = 2;
-loadParams.SqlProvider = SqlProvider.SqlServer;
-loadParams.ExecuterType = ProfilerExecuterType.ParallerExecutor;
-
 var loadProfilersFactory = new LoadProfilersFactory();
-var executorsFactory = new LoadProfilerExecutorsFactory(loadProfilersFactory);
+var mssqlLoadProfiler = loadProfilersFactory.GetLoadProfiler(connectionParams);
 
-var parallelProfilerExecuter = executorsFactory.GetProfilerExecuter(loadParams);
-var loadResult =  await parallelProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
+//var seqProfilerExecuter = new SequentialProfilerExecuter(mssqlLoadProfiler);
+//var loadResult = await seqProfilerExecuter.ExecuteLoadAsync(query, 100);
 
-//var parallelProfilerExecuter = new ParallelProfilerExecuter(loadParams, mssqlLoadProfiler);
-//var loadResult = await parallelProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
+var seqProfilerExecuter = new SequentialProfilerExecutorWithTimeLimit(mssqlLoadProfiler);
+var loadResult = await seqProfilerExecuter.ExecuteLoadAsync(query, 200, 100);
+
+////var seqProfilerExecuter = new SequentialProfilerExecuter(loadParams, mssqlLoadProfiler);
+////var loadResult = seqProfilerExecuter.ExecuteLoad();
+
+////loadParams.DelayMiliseconds = 10;
+////var seqProfilerExecuter = new SequentialProfilerExecuterWithDelay(loadParams, mssqlLoadProfiler);
+////var loadResult = await seqProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
+
+//loadParams.SqlProvider = SqlProvider.SqlServer;
+//loadParams.ExecuterType = ProfilerExecuterType.SequentialExecutor;
+
+//var loadProfilersFactory = new LoadProfilersFactory();
+//var executorsFactory = new LoadProfilerExecutorsFactory(loadProfilersFactory);
+
+//var parallelProfilerExecuter = executorsFactory.GetProfilerExecuter(loadParams);
+//var loadResult =  await parallelProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
+
+////var parallelProfilerExecuter = new ParallelProfilerExecuter(loadParams, mssqlLoadProfiler);
+////var loadResult = await parallelProfilerExecuter.ExecuteLoadAsync(CancellationToken.None);
 
 Console.WriteLine(
     $@"

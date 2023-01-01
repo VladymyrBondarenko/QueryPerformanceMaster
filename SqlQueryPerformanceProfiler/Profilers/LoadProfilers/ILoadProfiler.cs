@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using SqlQueryPerformanceProfiler.Profilers.LoadResults;
 
-namespace SqlQueryPerformanceProfiler.Profilers.Interfaces
+namespace SqlQueryPerformanceProfiler.Profilers.LoadProfilers
 {
     public interface ILoadProfiler
     {
-        Task<LoadProfilerResult> ExecuteQueryLoadAsync(CancellationToken cancellationToken);
+        Task<LoadProfilerResult> ExecuteQueryLoadAsync(string query, CancellationToken cancellationToken = default);
     }
 }

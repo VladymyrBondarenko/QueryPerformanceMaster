@@ -1,4 +1,4 @@
-# Sql Query Performance Profiler
+# QueryPerformanceMaster
 
 Expected Features:
 

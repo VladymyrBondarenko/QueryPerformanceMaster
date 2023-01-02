@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SqlQueryPerformanceProfiler\QueryPerformanceMaster.Core.csproj" />
+    <ProjectReference Include="..\QueryPerformanceMaster.Core\QueryPerformanceMaster.Core.csproj" />
   </ItemGroup>
 
 </Project>

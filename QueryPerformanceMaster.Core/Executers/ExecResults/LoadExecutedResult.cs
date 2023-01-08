@@ -4,33 +4,33 @@ namespace SqlQueryPerformanceProfiler.Executers.ExecResults
 {
     public class LoadExecutedResult
     {
-        public double CpuTimeTotal { get; set; }
+        public decimal CpuTimeTotal { get; set; }
 
         public List<double> CpuTimes { get; set; } = new List<double>();
 
-        public double CpuTimeAvg { get; set; }
+        public decimal CpuTimeAvg { get; set; }
 
-        public double CpuTimeMod { get; set; }
+        public decimal CpuTimeMod { get; set; }
 
-        public double CpuTimeStdDev { get; set; }
+        public decimal CpuTimeStdDev { get; set; }
 
-        public double LogicalReadsTotal { get; set; }
+        public decimal LogicalReadsTotal { get; set; }
 
         public List<double> LogicalReads { get; set; } = new List<double>();
 
-        public double LogicalReadsAvg { get; set; }
+        public decimal LogicalReadsAvg { get; set; }
 
-        public double LogicalReadsMod { get; set; }
+        public decimal LogicalReadsMod { get; set; }
 
-        public double LogicalReadsStdDev { get; set; }
+        public decimal LogicalReadsStdDev { get; set; }
 
-        public double ElapsedTimeTotal { get; set; }
+        public decimal ElapsedTimeTotal { get; set; }
 
-        public double ElapsedTimeAvg { get; set; }
+        public decimal ElapsedTimeAvg { get; set; }
 
-        public double ElapsedTimeMod { get; set; }
+        public decimal ElapsedTimeMod { get; set; }
 
-        public double ElapsedTimeStdDev { get; set; }
+        public decimal ElapsedTimeStdDev { get; set; }
 
         public List<double> ElapsedTimes { get; set; } = new List<double>();
 

@@ -16,16 +16,16 @@ namespace SqlQueryPerformanceProfiler.Executers
             List<LoadProfilerResult> loadProfilerResults)
         {
             var res = new LoadExecutedResult();
-
+            
             var cpuTimes = loadProfilerResults.Select(x => x.CpuTime / 1000).ToList();
             var logicalReads = loadProfilerResults.Select(x => x.LogicalReads).ToList();
             var elapsedTimes = loadProfilerResults.Select(x => x.ElapsedTime / 1000).ToList();
             var execTimes = loadProfilerResults.Select(x => x.ExecTime).ToList();
 
             //calc total
-            res.CpuTimeTotal = cpuTimes.Sum();
-            res.LogicalReadsTotal = logicalReads.Sum();
-            res.ElapsedTimeTotal = elapsedTimes.Sum();
+            res.CpuTimeTotal = (decimal)cpuTimes.Sum();
+            res.LogicalReadsTotal = (decimal)logicalReads.Sum();
+            res.ElapsedTimeTotal = (decimal)elapsedTimes.Sum();
 
             foreach (var result in loadProfilerResults)
             {
@@ -40,15 +40,15 @@ namespace SqlQueryPerformanceProfiler.Executers
 
             // calc mod
             var execTimeMiliseconds = execTimes.Select(x => x.TotalMilliseconds).ToList();
-            res.CpuTimeMod = cpuTimes.Median();
-            res.LogicalReadsMod = logicalReads.Median();
-            res.ElapsedTimeMod = elapsedTimes.Median();
+            res.CpuTimeMod = (decimal)cpuTimes.Median();
+            res.LogicalReadsMod = (decimal)logicalReads.Median();
+            res.ElapsedTimeMod = (decimal)elapsedTimes.Median();
             res.ExecTimeMod = TimeSpan.FromMilliseconds(execTimeMiliseconds.Median());
 
             // calc standard dev
-            res.CpuTimeStdDev = cpuTimes.StandardDeviation();
-            res.LogicalReadsStdDev = logicalReads.StandardDeviation();
-            res.ElapsedTimeStdDev = elapsedTimes.StandardDeviation();
+            res.CpuTimeStdDev = (decimal)cpuTimes.StandardDeviation();
+            res.LogicalReadsStdDev = (decimal)logicalReads.StandardDeviation();
+            res.ElapsedTimeStdDev = (decimal)elapsedTimes.StandardDeviation();
             res.ExecTimeStdDev = TimeSpan.FromMilliseconds(execTimeMiliseconds.StandardDeviation());
 
             // calc errors

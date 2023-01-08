@@ -10,6 +10,6 @@ namespace SqlQueryPerformanceProfiler.Profilers
     {
         SqlServer,
         Oracle,
-        Postgres
+        PostgreSql
     }
 }

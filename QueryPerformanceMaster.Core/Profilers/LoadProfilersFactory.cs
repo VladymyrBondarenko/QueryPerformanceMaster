@@ -16,6 +16,8 @@ namespace SqlQueryPerformanceProfiler.Profilers
             {
                 case SqlProvider.SqlServer:
                     return (ILoadProfiler)Activator.CreateInstance(typeof(MsSqlLoadProfiler), connectionParams);
+                case SqlProvider.PostgreSql:
+                    return (ILoadProfiler)Activator.CreateInstance(typeof(PostgreSqlProfiler), connectionParams);
                 default:
                     throw new NotImplementedException();
             }

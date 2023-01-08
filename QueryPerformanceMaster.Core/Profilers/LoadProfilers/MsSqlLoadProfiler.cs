@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using MathNet.Numerics.Statistics;
 using SqlQueryPerformanceProfiler.Profilers.LoadResults;
 
 namespace SqlQueryPerformanceProfiler.Profilers.LoadProfilers
@@ -60,19 +53,18 @@ namespace SqlQueryPerformanceProfiler.Profilers.LoadProfilers
 
             // TODO: maybe change to pass sql connection from outside
             using var sqlConnection = new SqlConnection(_connectionParams.ConnectionString);
-            var statCommand = new SqlCommand();
             var sw = new Stopwatch();
 
             try
             {
                 await sqlConnection.OpenAsync();
 
-                statCommand = sqlConnection.CreateCommand();
+                using var statCommand = sqlConnection.CreateCommand();
                 statCommand.CommandText = _statisticsCommand;
                 statCommand.Connection.InfoMessage += infoMessageHandler;
                 await statCommand.ExecuteNonQueryAsync();
 
-                var cmd = sqlConnection.CreateCommand();
+                using var cmd = sqlConnection.CreateCommand();
                 cmd.CommandText = query;
 
                 sw.Start();

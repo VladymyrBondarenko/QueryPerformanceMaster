@@ -35,5 +35,6 @@ Expected Features:
 6. Export computed values
 	1. In excel
 7. Ability to cancel load
+8. Make it testable
 
 Similar programms: SQLQueryStress

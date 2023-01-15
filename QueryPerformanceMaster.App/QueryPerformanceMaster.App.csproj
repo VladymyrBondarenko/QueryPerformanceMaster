@@ -3,17 +3,16 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="Npgsql" Version="7.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QueryPerformanceMaster.App\QueryPerformanceMaster.App.csproj" />
+    <ProjectReference Include="..\QueryPerformanceMaster.Domain\QueryPerformanceMaster.Domain.csproj" />
   </ItemGroup>
 
 </Project>

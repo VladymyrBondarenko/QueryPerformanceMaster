@@ -9,6 +9,6 @@ namespace QueryPerformanceMaster.Core.ConnectionProvider
 {
     public abstract class ConnectionProviderBase<T> : IConnectionProvider<T>
     {
-        public abstract Task<T> CreateConnection();
+        public abstract Task<T> CreateConnection(CancellationToken cancellationToken);
     }
 }

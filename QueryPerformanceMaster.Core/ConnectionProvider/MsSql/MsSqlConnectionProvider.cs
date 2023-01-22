@@ -16,10 +16,10 @@ namespace QueryPerformanceMaster.Core.ConnectionProvider.MsSql
             _connectionString = connectionString;
         }
 
-        public async override Task<SqlConnection> CreateConnection()
+        public async override Task<SqlConnection> CreateConnection(CancellationToken cancellationToken = default)
         {
             var sqlConnection = new SqlConnection(_connectionString);
-            await sqlConnection.OpenAsync();
+            await sqlConnection.OpenAsync(cancellationToken);
             return sqlConnection;
         }
     }

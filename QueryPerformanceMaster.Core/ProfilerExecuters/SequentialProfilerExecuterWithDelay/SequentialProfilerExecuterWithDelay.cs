@@ -21,9 +21,14 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecut
 
             for (int i = 1; i <= iterationNumber; i++)
             {
-                await Task.Delay(delayMiliseconds);
+                await Task.Delay(delayMiliseconds, cancellationToken);
                 var loadResult = await _loadProfiler.ExecuteQueryLoadAsync(query, cancellationToken);
                 loadProfilerResult.Add(loadResult);
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return ProfilerExecuterHelpers.FillLoadExecutedResult(i, loadProfilerResult);
+                }
             }
 
             return ProfilerExecuterHelpers.FillLoadExecutedResult(iterationNumber, loadProfilerResult);

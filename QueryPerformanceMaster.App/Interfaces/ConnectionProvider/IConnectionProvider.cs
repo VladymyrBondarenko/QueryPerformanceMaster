@@ -2,6 +2,6 @@
 {
     public interface IConnectionProvider<T>
     {
-        Task<T> CreateConnection();
+        Task<T> CreateConnection(CancellationToken cancellationToken = default);
     }
 }

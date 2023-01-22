@@ -23,6 +23,12 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecut
             {
                 var loadResult = await _loadProfiler.ExecuteQueryLoadAsync(query, cancellationToken);
 
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    loadProfilerResult.Add(loadResult);
+                    return ProfilerExecuterHelpers.FillLoadExecutedResult(i, loadProfilerResult);
+                }
+
                 var elapsedTime = loadProfilerResult.Sum(x => x.ElapsedTime) + loadResult.ElapsedTime;
                 if (elapsedTime >= timeLimitMiliseconds)
                 {

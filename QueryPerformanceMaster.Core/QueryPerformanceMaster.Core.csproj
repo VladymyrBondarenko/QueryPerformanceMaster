@@ -16,4 +16,10 @@
     <ProjectReference Include="..\QueryPerformanceMaster.App\QueryPerformanceMaster.App.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>QueryPerformanceMaster.Core.UnitTests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
 </Project>

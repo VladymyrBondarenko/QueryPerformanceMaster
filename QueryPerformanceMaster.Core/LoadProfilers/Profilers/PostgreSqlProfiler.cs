@@ -33,6 +33,12 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
         public async Task<LoadProfilerResult> ExecuteQueryLoadAsync(string query, CancellationToken cancellationToken = default)
         {
             var sqlQueryLoadResult = new LoadProfilerResult();
+            var isTaskCancelled = false;
+
+            cancellationToken.Register(() =>
+            {
+                isTaskCancelled = true;
+            });
 
             var sw = new Stopwatch();
             var connectionProvider = _connectionProviderFactory.GetConnectionProvider(_connectionParams.ConnectionString);
@@ -40,7 +46,7 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
 
             try
             {
-                sqlConnection = await connectionProvider.CreateConnection();
+                sqlConnection = await connectionProvider.CreateConnection(cancellationToken);
 
                 using var cmd = sqlConnection.CreateCommand();
                 cmd.CommandText = string.Concat(_statisticsCommand, " ", query);
@@ -49,7 +55,7 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
 
                 var reader = cmd.ExecuteReader();
 
-                while (await reader.ReadAsync())
+                while (await reader.ReadAsync(cancellationToken))
                 {
                     var textReader = await reader.GetTextReaderAsync(0, cancellationToken);
                     var queryPlanRow = await textReader.ReadLineAsync();
@@ -73,7 +79,10 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
             }
             catch (Exception ex)
             {
-                sqlQueryLoadResult.SqlQueryLoadError = ex.Message;
+                if (!isTaskCancelled)
+                {
+                    sqlQueryLoadResult.SqlQueryLoadError = ex.Message;
+                }
                 sw.Stop();
             }
             finally

@@ -30,7 +30,7 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.ParallelProfilerExecuter
             var completedTasks = await Task.WhenAll(tasks);
             var loadProfilerResult = completedTasks.SelectMany(x => x).ToList();
 
-            return ProfilerExecuterHelpers.FillLoadExecutedResult(iterationNumber, loadProfilerResult);
+            return ProfilerExecuterHelpers.FillLoadExecutedResult(loadProfilerResult.Count, loadProfilerResult);
         }
 
         private async Task<List<LoadProfilerResult>> ExecuteQueryLoad(string query, int iterationNumber,
@@ -41,6 +41,11 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.ParallelProfilerExecuter
             {
                 var loadResult = await _loadProfiler.ExecuteQueryLoadAsync(query, cancellationToken);
                 loadProfilerResult.Add(loadResult);
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return loadProfilerResult;
+                }
             }
             return loadProfilerResult;
         }

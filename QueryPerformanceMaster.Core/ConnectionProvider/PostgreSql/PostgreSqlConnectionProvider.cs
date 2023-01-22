@@ -17,10 +17,10 @@ namespace QueryPerformanceMaster.Core.ConnectionProvider.PostgreSql
             _connectionString = connectionString;
         }
 
-        public async override Task<NpgsqlConnection> CreateConnection()
+        public async override Task<NpgsqlConnection> CreateConnection(CancellationToken cancellationToken = default)
         {
             var sqlConnection = new NpgsqlConnection(_connectionString);
-            await sqlConnection.OpenAsync();
+            await sqlConnection.OpenAsync(cancellationToken);
             return sqlConnection;
         }
     }

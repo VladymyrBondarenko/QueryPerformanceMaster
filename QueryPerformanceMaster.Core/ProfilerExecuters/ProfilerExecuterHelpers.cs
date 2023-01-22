@@ -40,10 +40,11 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
             res.ExecTimeMod = TimeSpan.FromMilliseconds(execTimeMiliseconds.Median());
 
             // calc standard dev
-            res.CpuTimeStdDev = (decimal)cpuTimes.StandardDeviation();
-            res.LogicalReadsStdDev = (decimal)logicalReads.StandardDeviation();
-            res.ElapsedTimeStdDev = (decimal)elapsedTimes.StandardDeviation();
-            res.ExecTimeStdDev = TimeSpan.FromMilliseconds(execTimeMiliseconds.StandardDeviation());
+            res.CpuTimeStdDev = cpuTimes.Count > 1 ? (decimal)cpuTimes.StandardDeviation() : 0;
+            res.LogicalReadsStdDev = logicalReads.Count > 1 ? (decimal)logicalReads.StandardDeviation() : 0;
+            res.ElapsedTimeStdDev = elapsedTimes.Count > 1 ? (decimal)elapsedTimes.StandardDeviation() : 0;
+            res.ExecTimeStdDev = execTimeMiliseconds.Count > 1 ? 
+                TimeSpan.FromMilliseconds(execTimeMiliseconds.StandardDeviation()) : TimeSpan.FromMilliseconds(0);
 
             // calc errors
             var groupedErrors = loadProfilerResults.Select(x => x.SqlQueryLoadError).GroupBy(x => x);
@@ -57,7 +58,6 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
                 });
             }
 
-            // TODO: edit when add cancelation
             res.IterationCompleted = iterationNumber;
 
             return res;

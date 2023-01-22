@@ -33,6 +33,12 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
             CancellationToken cancellationToken = default)
         {
             var sqlQueryLoadResult = new LoadProfilerResult();
+            var isTaskCancelled = false;
+
+            cancellationToken.Register(() =>
+            {
+                isTaskCancelled = true;
+            });
 
             SqlInfoMessageEventHandler infoMessageHandler = (sender, e) =>
             {
@@ -62,25 +68,28 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
 
             try
             {
-                sqlConnection = await connectionProvider.CreateConnection();
+                sqlConnection = await connectionProvider.CreateConnection(cancellationToken);
 
                 using var statCommand = sqlConnection.CreateCommand();
                 statCommand.CommandText = _statisticsCommand;
                 statCommand.Connection.InfoMessage += infoMessageHandler;
-                await statCommand.ExecuteNonQueryAsync();
+                await statCommand.ExecuteNonQueryAsync(cancellationToken);
 
                 using var cmd = sqlConnection.CreateCommand();
                 cmd.CommandText = query;
 
                 sw.Start();
 
-                await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
 
                 sw.Stop();
             }
             catch (Exception ex)
             {
-                sqlQueryLoadResult.SqlQueryLoadError = ex.Message;
+                if (!isTaskCancelled)
+                {
+                    sqlQueryLoadResult.SqlQueryLoadError = ex.Message;
+                }
                 sw.Stop();
             }
             finally

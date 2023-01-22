@@ -23,6 +23,11 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecut
             {
                 var loadResult = await _loadProfiler.ExecuteQueryLoadAsync(query, cancellationToken);
                 loadProfilerResult.Add(loadResult);
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return ProfilerExecuterHelpers.FillLoadExecutedResult(i, loadProfilerResult);
+                }
             }
 
             return ProfilerExecuterHelpers.FillLoadExecutedResult(iterationNumber, loadProfilerResult);

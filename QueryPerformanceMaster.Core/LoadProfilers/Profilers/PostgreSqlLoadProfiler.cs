@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
 {
-    internal class PostgreSqlProfiler : ILoadProfiler
+    internal class PostgreSqlLoadProfiler : ILoadProfiler
     {
         private readonly SqlConnectionParams _connectionParams;
         private readonly IPostgreSqlConnectionProviderFactory _connectionProviderFactory;
@@ -23,7 +23,7 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
 
         private const string _statisticsCommand = "EXPLAIN (ANALYZE, BUFFERS)";
 
-        public PostgreSqlProfiler(SqlConnectionParams connectionParams,
+        public PostgreSqlLoadProfiler(SqlConnectionParams connectionParams,
             IPostgreSqlConnectionProviderFactory connectionProviderFactory)
         {
             _connectionParams = connectionParams;

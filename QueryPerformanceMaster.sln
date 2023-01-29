@@ -24,7 +24,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryPerformanceMaster.Core
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DesktopUI", "DesktopUI", "{CA805093-D3DE-4BFC-A227-815808313811}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvxStarter.Core", "MvxStarter.Core\MvxStarter.Core.csproj", "{0824C39A-C645-440B-B81D-38E446CC1E41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvxStarter.Core", "MvxStarter.Core\MvxStarter.Core.csproj", "{0824C39A-C645-440B-B81D-38E446CC1E41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvxStarter.Wpf", "MvxStarter.Wpf\MvxStarter.Wpf.csproj", "{410DE2B3-9291-4C00-B641-F7FEF781511E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{0824C39A-C645-440B-B81D-38E446CC1E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0824C39A-C645-440B-B81D-38E446CC1E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0824C39A-C645-440B-B81D-38E446CC1E41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{410DE2B3-9291-4C00-B641-F7FEF781511E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{410DE2B3-9291-4C00-B641-F7FEF781511E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{410DE2B3-9291-4C00-B641-F7FEF781511E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{410DE2B3-9291-4C00-B641-F7FEF781511E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{E217F926-5EF2-4E7E-A0C7-7A075B1FCC6D} = {0C5B92FD-76D6-4F2A-A431-B3AD90E267E0}
 		{CA805093-D3DE-4BFC-A227-815808313811} = {C6F42717-157D-4E4D-86BC-D685148EFCDF}
 		{0824C39A-C645-440B-B81D-38E446CC1E41} = {CA805093-D3DE-4BFC-A227-815808313811}
+		{410DE2B3-9291-4C00-B641-F7FEF781511E} = {CA805093-D3DE-4BFC-A227-815808313811}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7FAE8035-E7FD-4A12-868E-0A1505ECAE4F}

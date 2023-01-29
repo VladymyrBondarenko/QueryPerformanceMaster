@@ -1,4 +1,6 @@
-﻿namespace QueryPerformanceMaster.Domain
+﻿using QueryPerformanceMaster.Domain.SqlProviders;
+
+namespace QueryPerformanceMaster.Domain
 {
     public class SqlConnectionParams
     {

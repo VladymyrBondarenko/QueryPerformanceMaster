@@ -1,5 +1,4 @@
-﻿
-namespace QueryPerformanceMaster.Domain
+﻿namespace QueryPerformanceMaster.Domain.SqlProviders
 {
     public enum SqlProvider
     {

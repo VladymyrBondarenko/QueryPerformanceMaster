@@ -2,6 +2,7 @@
 using QueryPerformanceMaster.App.Interfaces.LoadProfilers;
 using QueryPerformanceMaster.Core.LoadProfilers.Profilers;
 using QueryPerformanceMaster.Domain;
+using QueryPerformanceMaster.Domain.SqlProviders;
 using System.Data;
 
 namespace QueryPerformanceMaster.Core.LoadProfilers

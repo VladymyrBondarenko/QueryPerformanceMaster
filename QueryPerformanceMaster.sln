@@ -22,6 +22,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryPerformanceMaster.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryPerformanceMaster.Core.Console", "QueryPerformanceMaster.Core.Console\QueryPerformanceMaster.Core.Console.csproj", "{E217F926-5EF2-4E7E-A0C7-7A075B1FCC6D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DesktopUI", "DesktopUI", "{CA805093-D3DE-4BFC-A227-815808313811}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvxStarter.Core", "MvxStarter.Core\MvxStarter.Core.csproj", "{0824C39A-C645-440B-B81D-38E446CC1E41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +52,10 @@ Global
 		{E217F926-5EF2-4E7E-A0C7-7A075B1FCC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E217F926-5EF2-4E7E-A0C7-7A075B1FCC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E217F926-5EF2-4E7E-A0C7-7A075B1FCC6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0824C39A-C645-440B-B81D-38E446CC1E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0824C39A-C645-440B-B81D-38E446CC1E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0824C39A-C645-440B-B81D-38E446CC1E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0824C39A-C645-440B-B81D-38E446CC1E41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,8 @@ Global
 		{66159EFB-2B6E-49AE-92E7-C5D121A025FB} = {C6F42717-157D-4E4D-86BC-D685148EFCDF}
 		{A6E2B858-3CEF-42B7-BB06-7AF4B502E7DB} = {0C5B92FD-76D6-4F2A-A431-B3AD90E267E0}
 		{E217F926-5EF2-4E7E-A0C7-7A075B1FCC6D} = {0C5B92FD-76D6-4F2A-A431-B3AD90E267E0}
+		{CA805093-D3DE-4BFC-A227-815808313811} = {C6F42717-157D-4E4D-86BC-D685148EFCDF}
+		{0824C39A-C645-440B-B81D-38E446CC1E41} = {CA805093-D3DE-4BFC-A227-815808313811}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7FAE8035-E7FD-4A12-868E-0A1505ECAE4F}

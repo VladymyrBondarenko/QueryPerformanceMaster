@@ -12,13 +12,16 @@
                 mc:Ignorable="d" 
              d:DesignWidth="800">
     <Grid>
-        <TreeView ItemsSource="{Binding SqlProvidersModel}" Margin="0,10,653,0">
-            <TreeView.Resources>
-                <DataTemplate DataType="{x:Type core:SqlProviderModel}">
-                    <TextBlock Text="{Binding Name}" />
-                </DataTemplate>
-            </TreeView.Resources>
+        <TreeView ItemsSource="{Binding SqlProviderModels}" Margin="0,10,653,0">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type core:SqlProviderModel}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="C:\Users\38095\source\repos\QueryPerformanceMaster\MvxStarter.Wpf\Icons\PostgresIcon.png"/>
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
-        <TextBox HorizontalAlignment="Left" Margin="147,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="653" Height="440"/>
+        <TextBox HorizontalAlignment="Left" Margin="147,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="653" Height="440"/>
     </Grid>
 </views:MvxWpfView>

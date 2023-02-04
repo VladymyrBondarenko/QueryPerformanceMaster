@@ -1,13 +1,6 @@
 ﻿using MvvmCross.ViewModels;
-using MvxStarter.Core.Models;
 using QueryPerformanceMaster.Core;
 using QueryPerformanceMaster.Domain.SqlProviders;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MvxStarter.Core.ViewModels
 {
@@ -20,22 +13,19 @@ namespace MvxStarter.Core.ViewModels
 
         private readonly ISqlProviderService _sqlProviderService;
 
-        private SqlProvidersModel _sqlProvidersModel;
+        private List<Models.SqlProviderModel> _sqlProviderModels;
 
-        public SqlProvidersModel SqlProvidersModel
+        public List<Models.SqlProviderModel> SqlProviderModels
         {
-            get { return _sqlProvidersModel; }
-            set { SetProperty(ref _sqlProvidersModel, value); }
+            get { return _sqlProviderModels; }
+            set { SetProperty(ref _sqlProviderModels, value); }
         }
 
         public override Task Initialize()
         {
             var sqlProviders = _sqlProviderService.GetSqlProviders();
-            SqlProvidersModel = new SqlProvidersModel
-            {
-                SqlProviderModels = new List<object>(
-                    sqlProviders.Select(x => new Models.SqlProviderModel { Name = x.SqlProviderTitle }))
-            };
+            SqlProviderModels = new List<Models.SqlProviderModel>(
+                    sqlProviders.Select(x => new Models.SqlProviderModel { Name = x.SqlProviderTitle }));
 
             return base.Initialize();
         }

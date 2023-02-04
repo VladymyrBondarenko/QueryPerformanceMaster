@@ -1,10 +1,12 @@
-﻿using MvvmCross;
+﻿using Microsoft.Extensions.Configuration;
+using MvvmCross;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.ViewModels;
 using QueryPerformanceMaster.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 

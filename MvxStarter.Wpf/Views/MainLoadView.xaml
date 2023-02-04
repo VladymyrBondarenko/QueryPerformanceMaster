@@ -16,7 +16,7 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type core:SqlProviderModel}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="C:\Users\38095\source\repos\QueryPerformanceMaster\MvxStarter.Wpf\Icons\PostgresIcon.png"/>
+                        <Image Source="{Binding IconPath}"/>
                         <TextBlock Text="{Binding Name}"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>

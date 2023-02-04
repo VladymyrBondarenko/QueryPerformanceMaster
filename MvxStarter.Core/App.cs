@@ -1,14 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MvvmCross;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.ViewModels;
+using MvxStarter.Core.Services;
 using MvxStarter.Core.ViewModels;
-using QueryPerformanceMaster.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MvxStarter.Core
 {
@@ -16,9 +11,23 @@ namespace MvxStarter.Core
     {
         public override void Initialize()
         {
+            //var configuration = addConfiguration();
+
+            //var sqlProviderOptions = new SqlProviderOptions();
+            //configuration.GetSection(nameof(SqlProviderOptions)).Bind()
+
             Mvx.IoCProvider.RegisterType<ISqlProviderService, SqlProviderService>();
 
             RegisterAppStart<MainLoadViewModel>();
         }
+
+        //private IConfiguration addConfiguration()
+        //{
+        //    IConfigurationBuilder builder = new ConfigurationBuilder()
+        //        .SetBasePath(Directory.GetCurrentDirectory())
+        //        .AddJsonFile("appsettings.json");
+
+        //    return builder.Build();
+        //}
     }
 }

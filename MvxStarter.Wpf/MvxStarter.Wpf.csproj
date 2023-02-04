@@ -8,6 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="wwwroot\Icons\MssqlIcon.png" />
+    <None Remove="wwwroot\Icons\OracleIcon.png" />
+    <None Remove="wwwroot\Icons\PostgresIcon.png" />
+    <None Remove="wwwroot\Icons\SqlServerIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\Icons\OracleIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\Icons\PostgresIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\Icons\SqlServerIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="MvvmCross.Platforms.Wpf" Version="9.0.9" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
@@ -16,10 +35,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MvxStarter.Core\MvxStarter.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Icons\" />
   </ItemGroup>
 
 </Project>

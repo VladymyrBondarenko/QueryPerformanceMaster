@@ -1,6 +1,6 @@
 ﻿using QueryPerformanceMaster.Domain.SqlProviders;
 
-namespace QueryPerformanceMaster.Core
+namespace MvxStarter.Core.Services
 {
     public interface ISqlProviderService
     {

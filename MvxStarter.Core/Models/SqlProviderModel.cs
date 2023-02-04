@@ -10,6 +10,6 @@ namespace MvxStarter.Core.Models
     {
         public string Name { get; set; }
 
-        public string Image { get; set; }
+        public string IconPath { get; set; }
     }
 }

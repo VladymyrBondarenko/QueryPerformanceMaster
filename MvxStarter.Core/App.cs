@@ -1,9 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
-using MvvmCross;
-using MvvmCross.Binding.BindingContext;
+﻿using MvvmCross;
+using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Services;
 using MvxStarter.Core.ViewModels;
+using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
+using QueryPerformanceMaster.App.Interfaces.SqlProviderServices;
+using QueryPerformanceMaster.Core.ConnectionProvider.MsSql;
+using QueryPerformanceMaster.Core.ConnectionProvider.MsSql.ConnectionSettings;
+using QueryPerformanceMaster.Core.SqlProviderServices.Factory;
 
 namespace MvxStarter.Core
 {
@@ -11,23 +15,13 @@ namespace MvxStarter.Core
     {
         public override void Initialize()
         {
-            //var configuration = addConfiguration();
-
-            //var sqlProviderOptions = new SqlProviderOptions();
-            //configuration.GetSection(nameof(SqlProviderOptions)).Bind()
-
+            Mvx.IoCProvider.RegisterSingleton<IMvxMessenger>(new MvxMessengerHub());
+            Mvx.IoCProvider.RegisterType<IMsSqlConnectionProviderFactory, MsSqlConnectionProviderFactory>();
+            Mvx.IoCProvider.RegisterType<ISqlProviderManagerFactory, SqlProviderManagerFactory>();
             Mvx.IoCProvider.RegisterType<ISqlProviderService, SqlProviderService>();
+            Mvx.IoCProvider.RegisterType<IMsSqlConnectionService, MsSqlConnectionService>();
 
             RegisterAppStart<MainLoadViewModel>();
         }
-
-        //private IConfiguration addConfiguration()
-        //{
-        //    IConfigurationBuilder builder = new ConfigurationBuilder()
-        //        .SetBasePath(Directory.GetCurrentDirectory())
-        //        .AddJsonFile("appsettings.json");
-
-        //    return builder.Build();
-        //}
     }
 }

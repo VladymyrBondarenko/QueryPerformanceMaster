@@ -1,33 +1,32 @@
-﻿using MvvmCross.ViewModels;
+﻿using MvvmCross.Plugin.Messenger;
+using MvvmCross.ViewModels;
 using MvxStarter.Core.Services;
-using QueryPerformanceMaster.Domain.SqlProviders;
 
 namespace MvxStarter.Core.ViewModels
 {
     public class MainLoadViewModel : MvxViewModel
     {
-        public MainLoadViewModel(ISqlProviderService sqlProviderService)
+        public MainLoadViewModel(ISqlProviderService sqlProviderService,
+            IMvxMessenger mvxMessenger)
         {
             _sqlProviderService = sqlProviderService;
+            SqlProviderViewModel = new SqlProvidersViewModel(sqlProviderService, mvxMessenger);
         }
 
         private readonly ISqlProviderService _sqlProviderService;
 
-        private List<Models.SqlProviderModel> _sqlProviderModels;
+        private SqlProvidersViewModel _sqlProviderViewModel;
 
-        public List<Models.SqlProviderModel> SqlProviderModels
+        public SqlProvidersViewModel SqlProviderViewModel
         {
-            get { return _sqlProviderModels; }
-            set { SetProperty(ref _sqlProviderModels, value); }
+            get { return _sqlProviderViewModel; }
+            set { _sqlProviderViewModel = value; }
         }
 
-        public override Task Initialize()
+        public override async Task Initialize()
         {
-            var sqlProviders = _sqlProviderService.GetSqlProviders();
-            SqlProviderModels = new List<Models.SqlProviderModel>(
-                    sqlProviders.Select(x => new Models.SqlProviderModel { Name = x.SqlProviderTitle, IconPath = x.SqlProviderIcon }));
-
-            return base.Initialize();
+            await base.Initialize();
+            await SqlProviderViewModel.Initialize();
         }
     }
 }

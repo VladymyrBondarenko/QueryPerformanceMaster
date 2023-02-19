@@ -8,20 +8,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MvxStarter.Wpf.Views"
              xmlns:core="clr-namespace:MvxStarter.Core.Models;assembly=MvxStarter.Core" 
-             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" d:DataContext="{d:DesignInstance Type=viewmodels:MainLoadViewModel}"
-                mc:Ignorable="d" 
+             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:MainLoadViewModel}"
+             mc:Ignorable="d" 
              d:DesignWidth="800">
     <Grid>
-        <TreeView ItemsSource="{Binding SqlProviderModels}" Margin="0,10,653,0">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type core:SqlProviderModel}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding IconPath}"/>
-                        <TextBlock Text="{Binding Name}"/>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
+        <local:SqlProvidersView DataContext="{Binding SqlProviderViewModel, Mode=TwoWay}"/>
         <TextBox HorizontalAlignment="Left" Margin="147,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="653" Height="440"/>
     </Grid>
 </views:MvxWpfView>

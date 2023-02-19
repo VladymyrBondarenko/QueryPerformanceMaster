@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace QueryPerformanceMaster.Domain.SqlProviders
 {
-    public class SqlProviderModel
+    public class SqlProviderDatabase
     {
-        public string SqlProviderTitle { get; set; }
-
-        public string SqlProviderIcon { get; set; }
+        public string Name { get; set; }
     }
 }

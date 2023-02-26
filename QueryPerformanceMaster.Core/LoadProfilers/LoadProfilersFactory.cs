@@ -23,9 +23,9 @@ namespace QueryPerformanceMaster.Core.LoadProfilers
             switch (connectionParams.SqlProvider)
             {
                 case SqlProvider.SqlServer:
-                    return (ILoadProfiler)Activator.CreateInstance(typeof(MsSqlLoadProfiler), connectionParams, _msSqlConnectionProviderFactory);
+                    return new MsSqlLoadProfiler(connectionParams, _msSqlConnectionProviderFactory);
                 case SqlProvider.PostgreSql:
-                    return (ILoadProfiler)Activator.CreateInstance(typeof(PostgreSqlLoadProfiler), connectionParams, _postgreSqlConnectionProviderFactory);
+                    return new PostgreSqlLoadProfiler(connectionParams, _postgreSqlConnectionProviderFactory);
                 default:
                     throw new NotImplementedException();
             }

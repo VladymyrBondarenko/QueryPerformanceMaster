@@ -19,7 +19,7 @@ namespace QueryPerformanceMaster.Core.SqlProviderServices.Factory
             switch (connectionParams.SqlProvider)
             {
                 case SqlProvider.SqlServer:
-                    return (MsSqlProviderManager)Activator.CreateInstance(typeof(MsSqlProviderManager), _connectionProviderFactory, connectionParams.ConnectionString);
+                    return new MsSqlProviderManager(_connectionProviderFactory, connectionParams.ConnectionString);
             }
 
             throw new NotImplementedException();

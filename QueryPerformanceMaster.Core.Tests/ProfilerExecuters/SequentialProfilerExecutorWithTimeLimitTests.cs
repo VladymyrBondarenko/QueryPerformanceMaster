@@ -1,8 +1,7 @@
 ﻿using Moq;
 using QueryPerformanceMaster.App.Interfaces.LoadExecuters;
 using QueryPerformanceMaster.App.Interfaces.LoadProfilers;
-using QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecuter;
-using QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecutorWithTimeLimit;
+using QueryPerformanceMaster.Core.ProfilerExecuters.Executers;
 using QueryPerformanceMaster.Domain.ExecResults;
 using QueryPerformanceMaster.Domain.LoadResults;
 using System;

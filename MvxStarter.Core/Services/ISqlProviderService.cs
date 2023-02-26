@@ -5,7 +5,7 @@ namespace MvxStarter.Core.Services
 {
     public interface ISqlProviderService
     {
-        Task<List<SqlProviderDatabase>> GetSqlProviderDatabasesAsync(SqlProvider sqlProvider, string connectionString);
+        Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync(SqlProvider sqlProvider, string connectionString);
         List<SqlProviderModel> GetSqlProviders();
     }
 }

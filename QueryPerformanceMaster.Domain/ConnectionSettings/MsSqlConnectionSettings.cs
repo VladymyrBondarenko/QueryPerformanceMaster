@@ -1,13 +1,13 @@
 ﻿using System.Data.SqlClient;
 using System.Runtime.Serialization;
 
-namespace QueryPerformanceMaster.Core.ConnectionProvider.MsSql.ConnectionSettings
+namespace QueryPerformanceMaster.Domain.ConnectionSettings
 {
     [Serializable]
     [DataContract]
     public class MsSqlConnectionSettings
     {
-        [DataMember]
+        [DataMember(Name = "Data Source")]
         public string Database { get; set; }
 
         [DataMember]

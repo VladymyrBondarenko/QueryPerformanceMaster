@@ -11,15 +11,18 @@ namespace MvxStarter.Core.Messages
 {
     public class LoadedDatabasesMessage : MvxMessage
     {
-        public LoadedDatabasesMessage(object sender, SqlProvider sqlProvider, List<string> databases)
+        public LoadedDatabasesMessage(object sender, SqlProvider sqlProvider, List<string> databases, string connectionString)
             : base(sender)
         {
             Databases = databases;
             SqlProvider = sqlProvider;
+            ConnectionString = connectionString;
         }
 
         public List<string> Databases { get; private set; }
 
         public SqlProvider SqlProvider { get; private set; }
+
+        public string ConnectionString { get; set; }
     }
 }

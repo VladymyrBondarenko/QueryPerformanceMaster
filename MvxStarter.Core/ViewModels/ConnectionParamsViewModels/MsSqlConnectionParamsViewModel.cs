@@ -7,32 +7,37 @@ using QueryPerformanceMaster.Core.ConnectionProvider.MsSql.ConnectionSettings;
 using QueryPerformanceMaster.Domain.SqlProviders;
 using MvvmCross.Plugin.Messenger;
 using MvxStarter.Core.Messages;
+using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
+using QueryPerformanceMaster.Domain.ConnectionSettings;
 
-namespace MvxStarter.Core.ViewModels
+namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
 {
     public class MsSqlConnectionParamsViewModel : MvxViewModel
     {
         private readonly ISqlProviderService _sqlProviderService;
         private readonly IMsSqlConnectionService _sqlConnectionService;
         private readonly IMvxMessenger _mvxMessenger;
+        private readonly IMvxNavigationService _navManager;
 
         public MsSqlConnectionParamsViewModel(ISqlProviderService sqlProviderService,
-            IMsSqlConnectionService sqlConnectionService, IMvxMessenger mvxMessenger)
+            IMsSqlConnectionService sqlConnectionService, IMvxMessenger mvxMessenger,
+            IMvxNavigationService navManager)
         {
             SaveConnectionParamsCommand = new MvxCommand(async () => await SaveConnectionParams());
             Authentication = Authentication.IntegratedAuthentication;
             _sqlProviderService = sqlProviderService;
             _sqlConnectionService = sqlConnectionService;
             _mvxMessenger = mvxMessenger;
+            _navManager = navManager;
         }
 
         private string _server;
         public string Server
         {
             get { return _server; }
-            set 
+            set
             {
-               SetProperty(ref _server, value);
+                SetProperty(ref _server, value);
             }
         }
 
@@ -40,7 +45,7 @@ namespace MvxStarter.Core.ViewModels
         public string Login
         {
             get { return _login; }
-            set 
+            set
             {
                 SetProperty(ref _login, value);
             }
@@ -63,8 +68,8 @@ namespace MvxStarter.Core.ViewModels
         public string Password
         {
             get { return _password; }
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _password, value);
             }
         }
@@ -121,27 +126,35 @@ namespace MvxStarter.Core.ViewModels
         public bool IsDatabasesComboBoxOpen
         {
             get { return _isDatabasesComboBoxOpen; }
-            set 
-            { 
-                SetProperty(ref _isDatabasesComboBoxOpen, value); 
+            set
+            {
+                SetProperty(ref _isDatabasesComboBoxOpen, value);
             }
         }
 
-        public MvvmCross.Commands.IMvxCommand SaveConnectionParamsCommand { get; set; }
+        public IMvxCommand SaveConnectionParamsCommand { get; set; }
         public async Task SaveConnectionParams()
         {
-            var connectionString = _sqlConnectionService.GetConnectionString(new MsSqlConnectionSettings
+            var connectionSettings = new MsSqlConnectionSettings
             {
                 Server = Server,
                 IntegratedAuth = Authentication == Authentication.IntegratedAuthentication,
                 Login = Login,
-                Password= Password
-            });
-            var databases = await _sqlProviderService.GetSqlProviderDatabasesAsync(SqlProvider.SqlServer, connectionString);
-            _mvxMessenger.Publish(new LoadedDatabasesMessage(this, SqlProvider.SqlServer, databases.Select(x => x.Name).ToList()));
+                Password = Password
+            };
+            var connectionString = _sqlConnectionService.GetConnectionString(connectionSettings);
 
-            var navManager = Mvx.IoCProvider.Resolve<IMvxNavigationService>();
-            await navManager.Close(this);
+            var getDatabasesResult = await _sqlProviderService.GetSqlProviderDatabasesAsync(SqlProvider.SqlServer, connectionString);
+            if (getDatabasesResult.Success)
+            {
+                _mvxMessenger.Publish(new LoadedDatabasesMessage(this, 
+                    SqlProvider.SqlServer, getDatabasesResult.SqlProviderDatabases.Select(x => x.Name).ToList(), connectionString));
+                await _navManager.Close(this);
+            }
+            else
+            {
+                // TODO: error message
+            }
         }
     }
 

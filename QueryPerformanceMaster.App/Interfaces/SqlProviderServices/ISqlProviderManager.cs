@@ -4,6 +4,6 @@ namespace QueryPerformanceMaster.App.Interfaces.SqlProviderServices
 {
     public interface ISqlProviderManager
     {
-        Task<List<SqlProviderDatabase>> GetSqlProviderDatabasesAsync();
+        Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync();
     }
 }

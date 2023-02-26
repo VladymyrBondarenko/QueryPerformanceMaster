@@ -24,7 +24,7 @@ namespace QueryPerformanceMaster.Core.SqlProviderServices
             _connectionString = connectionString;
         }
 
-        public async Task<List<SqlProviderDatabase>> GetSqlProviderDatabasesAsync()
+        public async Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync()
         {
             const string query = "SELECT databases.name FROM sys.databases WHERE databases.state = 0 ORDER BY databases.name";
 
@@ -44,9 +44,12 @@ namespace QueryPerformanceMaster.Core.SqlProviderServices
                     databases.Add(new SqlProviderDatabase { Name = (string)reader[0] });
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                // analyze exception codes
+                return new GetProviderDatabasesResult(false) 
+                { 
+                    ErrorMessage = ex.Message
+                };
             }
             finally
             {
@@ -56,7 +59,7 @@ namespace QueryPerformanceMaster.Core.SqlProviderServices
                 }
             }
 
-            return databases;
+            return new GetProviderDatabasesResult { SqlProviderDatabases = databases };
         }
     }
 }

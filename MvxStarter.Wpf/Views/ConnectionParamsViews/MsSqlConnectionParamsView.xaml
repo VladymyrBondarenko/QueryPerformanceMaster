@@ -7,7 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MvxStarter.Wpf.Views"
-             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" d:DataContext="{d:DesignInstance Type=viewmodels:MsSqlConnectionParamsViewModel}" 
+             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels.ConnectionParamsViewModels;assembly=MvxStarter.Core" d:DataContext="{d:DesignInstance Type=viewmodels:MsSqlConnectionParamsViewModel}" 
                 mc:Ignorable="d" 
              d:DesignHeight="450" Width="349">
     <Grid Margin="0,0,19,46">

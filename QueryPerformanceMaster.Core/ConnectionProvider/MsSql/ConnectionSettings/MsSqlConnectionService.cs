@@ -5,11 +5,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QueryPerformanceMaster.Domain.ConnectionSettings;
+using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace QueryPerformanceMaster.Core.ConnectionProvider.MsSql.ConnectionSettings
 {
     public class MsSqlConnectionService : IMsSqlConnectionService
     {
+        public MsSqlConnectionSettings GetMsSqlConnectionSettings(string connectionString)
+        {
+            var builder = new SqlConnectionStringBuilder(connectionString);
+            return new MsSqlConnectionSettings 
+            { 
+                Server = builder.DataSource,
+                IntegratedAuth = builder.IntegratedSecurity,
+                ApplicationIntent = builder.ApplicationIntent,
+                Login = builder.UserID,
+                Password = builder.Password,
+                Database = builder.InitialCatalog,
+                ConnectTimeout = builder.ConnectTimeout,
+                MaxPoolSize = builder.MaxPoolSize,
+                EnablePooling = builder.Pooling
+            };
+        }
+
         public string GetConnectionString(MsSqlConnectionSettings settings)
         {
             var build = new SqlConnectionStringBuilder

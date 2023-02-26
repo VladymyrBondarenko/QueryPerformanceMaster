@@ -47,7 +47,10 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
                 TimeSpan.FromMilliseconds(execTimeMiliseconds.StandardDeviation()) : TimeSpan.FromMilliseconds(0);
 
             // calc errors
-            var groupedErrors = loadProfilerResults.Select(x => x.SqlQueryLoadError).GroupBy(x => x);
+            var groupedErrors = loadProfilerResults
+                .Where(x => !string.IsNullOrEmpty(x.SqlQueryLoadError))
+                .Select(x => x.SqlQueryLoadError)
+                .GroupBy(x => x);
 
             foreach (var error in groupedErrors)
             {

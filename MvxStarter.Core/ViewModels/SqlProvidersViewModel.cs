@@ -9,19 +9,17 @@ namespace MvxStarter.Core.ViewModels
 {
     public class SqlProvidersViewModel : MvxViewModel
     {
+        private readonly MvxSubscriptionToken _loadedDatabasesToken;
+        private readonly ISqlProviderService _sqlProviderService;
+
         public SqlProvidersViewModel(ISqlProviderService sqlProviderService,
             IMvxMessenger mvxMessenger)
         {
             _sqlProviderService = sqlProviderService;
-            _messageToken = mvxMessenger.Subscribe<LoadedDatabasesMessage>(OnLoadedDatabases);
+            _loadedDatabasesToken = mvxMessenger.Subscribe<LoadedDatabasesMessage>(OnLoadedDatabases);
         }
 
-        private readonly MvxSubscriptionToken _messageToken;
-
-        private readonly ISqlProviderService _sqlProviderService;
-
         private ObservableCollection<SqlProviderModel> _sqlProviderModels;
-
         public ObservableCollection<SqlProviderModel> SqlProviderModels
         {
             get { return _sqlProviderModels; }
@@ -40,14 +38,22 @@ namespace MvxStarter.Core.ViewModels
             var sqlProvider = SqlProviderModels.FirstOrDefault(x => x.SqlProvider == message.SqlProvider);
             if (sqlProvider != null)
             {
+                var databases = new List<SqlProviderDatabaseModel>(
+                    message.Databases.Select(x => new SqlProviderDatabaseModel
+                    {
+                        Name = x,
+                        SqlProvider = sqlProvider.SqlProvider,
+                        ConnectionString = message.ConnectionString
+                    }));
+
                 SqlProviderModels[SqlProviderModels.IndexOf(sqlProvider)] = new SqlProviderModel
                 {
                     Name = sqlProvider.Name,
                     SqlProvider = sqlProvider.SqlProvider,
                     IconPath = sqlProvider.IconPath,
-                    Databases = new List<SqlProviderDatabaseModel>(
-                        message.Databases.Select(x => new SqlProviderDatabaseModel { Name = x })),
-                    IsExpanded = sqlProvider.IsExpanded
+                    Databases = databases,
+                    IsExpanded = sqlProvider.IsExpanded,
+                    ConnectionString = message.ConnectionString
                 };
             }
         }

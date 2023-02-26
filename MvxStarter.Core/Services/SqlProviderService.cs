@@ -38,11 +38,11 @@ namespace MvxStarter.Core.Services
             }).ToList();
         }
 
-        public async Task<List<SqlProviderDatabase>> GetSqlProviderDatabasesAsync(SqlProvider sqlProvider, string connectionString)
+        public async Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync(SqlProvider sqlProvider, string connectionString)
         {
             var sqlProviderManager = _sqlProviderManagerFactory.GetSqlProviderService(new SqlConnectionParams
             {
-                SqlProvider= sqlProvider,
+                SqlProvider = sqlProvider,
                 ConnectionString = connectionString
             });
             return await sqlProviderManager.GetSqlProviderDatabasesAsync();

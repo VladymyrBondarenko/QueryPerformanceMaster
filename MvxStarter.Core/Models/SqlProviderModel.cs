@@ -1,7 +1,7 @@
 ﻿using MvvmCross.Navigation;
 using MvvmCross;
-using MvxStarter.Core.ViewModels;
 using QueryPerformanceMaster.Domain.SqlProviders;
+using MvxStarter.Core.ViewModels.ConnectionParamsViewModels;
 
 namespace MvxStarter.Core.Models
 {
@@ -12,6 +12,8 @@ namespace MvxStarter.Core.Models
         public string IconPath { get; set; }
 
         public SqlProvider SqlProvider { get; set; }
+
+        public string ConnectionString { get; set; }
 
         private List<SqlProviderDatabaseModel> _databases;
 

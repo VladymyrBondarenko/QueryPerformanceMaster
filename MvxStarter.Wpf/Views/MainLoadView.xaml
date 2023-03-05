@@ -10,10 +10,37 @@
              xmlns:core="clr-namespace:MvxStarter.Core.Models;assembly=MvxStarter.Core" 
              xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" 
              d:DataContext="{d:DesignInstance Type=viewmodels:MainLoadViewModel}"
-             mc:Ignorable="d" 
-             d:DesignWidth="800">
-    <Grid>
-        <local:SqlProvidersView DataContext="{Binding SqlProviderViewModel, Mode=TwoWay}"/>
-        <local:QueryEditorView DataContext="{Binding QueryEditorViewModel, Mode=TwoWay}"/>
-    </Grid>
+             mc:Ignorable="d"
+             d:DesignWidth="800" Height="450">
+    <Border Background="#272537" CornerRadius="20">
+        <Grid>
+            <local:SqlProvidersView DataContext="{Binding SqlProviderViewModel, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            <local:QueryEditorView DataContext="{Binding QueryEditorViewModel, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            
+            <Button Command="{Binding CloseWindowCommand}" Content="X" FontSize="15" Foreground="White" HorizontalAlignment="Left" Margin="772,6,0,0" VerticalAlignment="Top" Height="22" Width="18">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#272537"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="#272537" BorderThickness="1">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF403D50"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+    </Border>
 </views:MvxWpfView>

@@ -24,6 +24,7 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             IMvxNavigationService navManager)
         {
             SaveConnectionParamsCommand = new MvxCommand(async () => await SaveConnectionParams());
+            CloseWindowCommand = new MvxCommand(async () => await CloseWindow());
             Authentication = Authentication.IntegratedAuthentication;
             _sqlProviderService = sqlProviderService;
             _sqlConnectionService = sqlConnectionService;
@@ -132,7 +133,11 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             }
         }
 
+
         public IMvxCommand SaveConnectionParamsCommand { get; set; }
+
+        public IMvxCommand CloseWindowCommand { get; set; }
+
         public async Task SaveConnectionParams()
         {
             var connectionSettings = new MsSqlConnectionSettings
@@ -155,6 +160,11 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             {
                 // TODO: error message
             }
+        }
+
+        public async Task CloseWindow()
+        {
+            await _navManager.Close(this);
         }
     }
 

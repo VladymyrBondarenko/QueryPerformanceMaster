@@ -1,4 +1,6 @@
 ﻿using MvvmCross.Platforms.Wpf.Views;
+using System.Windows.Input;
+
 namespace MvxStarter.Wpf
 {
     /// <summary>
@@ -9,6 +11,14 @@ namespace MvxStarter.Wpf
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            // Begin dragging the window
+            this.DragMove();
         }
     }
 }

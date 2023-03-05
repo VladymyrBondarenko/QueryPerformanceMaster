@@ -8,23 +8,84 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MvxStarter.Wpf.Views"
              xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels.ConnectionParamsViewModels;assembly=MvxStarter.Core" d:DataContext="{d:DesignInstance Type=viewmodels:MsSqlConnectionParamsViewModel}" 
-                mc:Ignorable="d" 
-             d:DesignHeight="450" Width="349">
-    <Grid Margin="0,0,19,46">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="0*"/>
-        </Grid.RowDefinitions>
-        <TextBox Text="{Binding Server, Mode=TwoWay}" HorizontalAlignment="Left" Margin="23,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18"/>
-        <Label Content="Server" HorizontalAlignment="Left" Margin="23,20,0,0" VerticalAlignment="Top" Height="26" Width="43"/>
-        <Label Content="Authentication" HorizontalAlignment="Left" Margin="23,69,0,0" VerticalAlignment="Top" Height="26" Width="88"/>
-        <ComboBox SelectedItem="{Binding Authentication, Mode=TwoWay}" ItemsSource="{Binding Authentications}" HorizontalAlignment="Left" Margin="23,95,0,0" VerticalAlignment="Top" Width="268" Height="22"/>
-        <Label Content="Login" HorizontalAlignment="Left" Margin="23,122,0,0" VerticalAlignment="Top" Height="26" Width="39"/>
-        <TextBox Text="{Binding Login, Mode=TwoWay}" IsEnabled="{Binding IsLoginEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="23,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="23,177,0,0" VerticalAlignment="Top" Height="26" Width="60"/>
-        <TextBox Text="{Binding Password, Mode=TwoWay}" IsEnabled="{Binding IsPasswordEnabled,Mode=TwoWay}" HorizontalAlignment="Left" Margin="23,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18"/>
-        <ComboBox IsDropDownOpen="{Binding IsDatabasesComboBoxOpen}" SelectedItem="{Binding DefaultDatabase, Mode=TwoWay}" ItemsSource="{Binding Databases}" HorizontalAlignment="Left" Margin="23,255,0,0" VerticalAlignment="Top" Width="268" Height="22"/>
-        <Label Content="Default Database" HorizontalAlignment="Left" Margin="23,226,0,0" VerticalAlignment="Top" Height="26" Width="101"/>
-        <Button Command="{Binding SaveConnectionParamsCommand}" Content="Save" HorizontalAlignment="Left" Margin="251,297,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.867,-2.063" Width="40"/>
-    </Grid>
+                mc:Ignorable="d" Width="340" Height="402">
+    <Border Background="#272537" CornerRadius="20" Margin="0,0,0,19">
+        <Grid Margin="16,10,16,22">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="0*"/>
+            </Grid.RowDefinitions>
+            <TextBox Text="{Binding Server, Mode=TwoWay}" HorizontalAlignment="Left" Margin="23,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18" >
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <Label Content="Server" HorizontalAlignment="Left" Margin="23,20,0,0" VerticalAlignment="Top" Height="26" Width="43" Foreground="White"/>
+            <Label Content="Authentication" HorizontalAlignment="Left" Margin="23,69,0,0" VerticalAlignment="Top" Height="26" Width="88" Foreground="White"/>
+            <ComboBox SelectedItem="{Binding Authentication, Mode=TwoWay}" ItemsSource="{Binding Authentications}" HorizontalAlignment="Left" Margin="23,95,0,0" VerticalAlignment="Top" Width="268" Height="22">
+                <ComboBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </ComboBox.Resources>
+            </ComboBox>
+            <Label Content="Login" HorizontalAlignment="Left" Margin="23,122,0,0" VerticalAlignment="Top" Height="26" Width="39" Foreground="White"/>
+            <TextBox Text="{Binding Login, Mode=TwoWay}" IsEnabled="{Binding IsLoginEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="23,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <Label Content="Password" HorizontalAlignment="Left" Margin="23,177,0,0" VerticalAlignment="Top" Height="26" Width="60" Foreground="White"/>
+            <TextBox Text="{Binding Password, Mode=TwoWay}" IsEnabled="{Binding IsPasswordEnabled,Mode=TwoWay}" HorizontalAlignment="Left" Margin="23,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <ComboBox IsDropDownOpen="{Binding IsDatabasesComboBoxOpen}" SelectedItem="{Binding DefaultDatabase, Mode=TwoWay}" ItemsSource="{Binding Databases}" HorizontalAlignment="Left" Margin="23,255,0,0" VerticalAlignment="Top" Width="268" Height="22">
+                <ComboBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </ComboBox.Resources>
+            </ComboBox>
+            <Label Content="Default Database" HorizontalAlignment="Left" Margin="23,226,0,0" VerticalAlignment="Top" Height="26" Width="101" Foreground="White"/>
+            <Button Command="{Binding SaveConnectionParamsCommand}" Content="Save" HorizontalAlignment="Left" Margin="251,297,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.867,-2.063" Width="40" Background="White">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Command="{Binding CloseWindowCommand}" Content="X" Foreground="White" HorizontalAlignment="Left" Margin="268,10,0,0" VerticalAlignment="Top" Height="21" Width="23" BorderBrush="#272537">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#272537"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="#272537" BorderThickness="1">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF403D50"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+    </Border>
 </views:MvxWpfView>

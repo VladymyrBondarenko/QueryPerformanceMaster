@@ -1,4 +1,6 @@
-﻿using MvvmCross.Plugin.Messenger;
+﻿using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Services;
 using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
@@ -8,16 +10,19 @@ namespace MvxStarter.Core.ViewModels
 {
     public class MainLoadViewModel : MvxViewModel
     {
+        private readonly IMvxNavigationService _navManager;
+
         public MainLoadViewModel(ISqlProviderService sqlProviderService,
             IMvxMessenger mvxMessenger, IProfilerExecuterService profilerExecuterService, 
-            IConnectionService connectionService)
+            IConnectionService connectionService, IMvxNavigationService navManager)
         {
             SqlProviderViewModel = new SqlProvidersViewModel(sqlProviderService, mvxMessenger);
             QueryEditorViewModel = new QueryEditorViewModel(mvxMessenger, profilerExecuterService, connectionService);
+            _navManager = navManager;
+            CloseWindowCommand = new MvxCommand(async () => await CloseWindow());
         }
 
         private SqlProvidersViewModel _sqlProviderViewModel;
-
         public SqlProvidersViewModel SqlProviderViewModel
         {
             get { return _sqlProviderViewModel; }
@@ -25,18 +30,24 @@ namespace MvxStarter.Core.ViewModels
         }
 
         private QueryEditorViewModel _queryEditorViewModel;
-
         public QueryEditorViewModel QueryEditorViewModel
         {
             get { return _queryEditorViewModel; }
             set { _queryEditorViewModel = value; }
         }
 
+        public IMvxCommand CloseWindowCommand { get; set; }
+
         public override async Task Initialize()
         {
             await base.Initialize();
             await SqlProviderViewModel.Initialize();
             await QueryEditorViewModel.Initialize();
+        }
+
+        public async Task CloseWindow()
+        {
+            await _navManager.Close(this);
         }
     }
 }

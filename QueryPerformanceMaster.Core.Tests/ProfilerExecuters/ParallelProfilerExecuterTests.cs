@@ -1,7 +1,7 @@
 ﻿using Moq;
 using QueryPerformanceMaster.App.Interfaces.LoadExecuters;
 using QueryPerformanceMaster.App.Interfaces.LoadProfilers;
-using QueryPerformanceMaster.Core.ProfilerExecuters.Executers;
+using QueryPerformanceMaster.Core.ProfilerExecuters.ParallelProfilerExecuter;
 using QueryPerformanceMaster.Domain.ExecResults;
 using QueryPerformanceMaster.Domain.LoadResults;
 using Xunit;

@@ -27,11 +27,14 @@ namespace MvxStarter.Core.ViewModels
         {
             _addedQueryEditorTabToken = mvxMessenger.Subscribe<AddedQueryEditorTabMessage>(OnAddedQueryEditorTab);
             RunQueryCommand = new MvxCommand(async () => await RunQueryAsync());
+            CloseEditorTabCommand = new MvxCommand(() => CloseEditorTab());
             _queryExecuterService = queryExecuterService;
             _connectionService = connectionService;
         }
 
         public IMvxCommand RunQueryCommand { get; set; }
+
+        public IMvxCommand CloseEditorTabCommand { get; set; }
 
         private ObservableCollection<QueryEditorTabModel> _queryEditorTabs;
 
@@ -56,7 +59,8 @@ namespace MvxStarter.Core.ViewModels
                 SqlProvider = message.SqlProvider,
                 Database = message.Database,
                 IsSelected = true,
-                ConnectionString = _connectionService.SetDatabaseToConnectionString(message.SqlProvider, message.ConnectionString, message.Database)
+                ConnectionString = _connectionService.SetDatabaseToConnectionString(message.SqlProvider, message.ConnectionString, message.Database),
+                CloseEditorTabCommand = CloseEditorTabCommand
             });
         }
 
@@ -80,6 +84,12 @@ namespace MvxStarter.Core.ViewModels
                         SqlProvider = activeQueryEditorTab.SqlProvider
                     });
             }
+        }
+
+        private void CloseEditorTab()
+        {
+            var activeQueryEditorTab = QueryEditorTabs.FirstOrDefault(x => x.IsSelected);
+            QueryEditorTabs.Remove(activeQueryEditorTab);
         }
     }
 }

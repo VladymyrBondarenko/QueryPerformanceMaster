@@ -1,18 +1,9 @@
 ﻿using Moq;
-using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
 using QueryPerformanceMaster.App.Interfaces.LoadExecuters;
 using QueryPerformanceMaster.App.Interfaces.LoadProfilers;
-using QueryPerformanceMaster.Core.ConnectionProvider.MsSql;
-using QueryPerformanceMaster.Core.LoadProfilers.Profilers;
-using QueryPerformanceMaster.Core.ProfilerExecuters.Executers;
-using QueryPerformanceMaster.Domain;
+using QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecuter;
 using QueryPerformanceMaster.Domain.ExecResults;
 using QueryPerformanceMaster.Domain.LoadResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace QueryPerformanceMaster.Core.Tests.ProfilerExecuters

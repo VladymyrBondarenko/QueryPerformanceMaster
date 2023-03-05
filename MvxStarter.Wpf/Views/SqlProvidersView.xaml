@@ -29,7 +29,7 @@
                     <TextBlock Text="{Binding Path=Name}" >
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Run Query">
+                                <MenuItem Header="Create Query">
                                     <MenuItem.InputBindings>
                                         <MouseBinding Command="{Binding CreateQueryCommand}" MouseAction="LeftClick" />
                                     </MenuItem.InputBindings>

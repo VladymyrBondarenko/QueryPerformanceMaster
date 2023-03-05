@@ -31,8 +31,14 @@
 
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock
-                    Text="{Binding TabTitle}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TabTitle}" />
+                        <Image Source="{Binding CloseImgPath}" Width="20" Height="20">
+                            <Image.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding CloseEditorTabCommand, Mode=OneTime}" />
+                            </Image.InputBindings>
+                        </Image>
+                    </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             

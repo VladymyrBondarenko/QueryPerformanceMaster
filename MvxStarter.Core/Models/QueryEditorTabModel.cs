@@ -1,4 +1,5 @@
-﻿using QueryPerformanceMaster.Domain.SqlProviders;
+﻿using MvvmCross.Commands;
+using QueryPerformanceMaster.Domain.SqlProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,9 @@ namespace MvxStarter.Core.Models
         public string ConnectionString { get; set; }
 
         public bool IsSelected { get; set; }
+
+        public string CloseImgPath => "pack://application:,,,/wwwroot/Icons/close-tab.png";
+
+        public IMvxCommand CloseEditorTabCommand { get; internal set; }
     }
 }

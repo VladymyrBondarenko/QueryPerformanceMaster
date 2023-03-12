@@ -7,7 +7,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MvxStarter.Wpf.Views"
              xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" xmlns:UserControlTemplate="clr-namespace:UserControlTemplate"
-    x:Class="MvxStarter.Wpf.Views.QueryEditorView"
+             x:Class="MvxStarter.Wpf.Views.QueryEditorView"
              d:DataContext="{d:DesignInstance Type={x:Type viewmodels:QueryEditorViewModel}}"
                 mc:Ignorable="d" Height="560" Width="1029">
     <Grid Margin="200,10,10,10" Background="#272537">

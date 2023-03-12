@@ -1,4 +1,6 @@
-﻿using MvvmCross.Commands;
+﻿using AutoMapper;
+using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Messages;
@@ -17,9 +19,12 @@ namespace MvxStarter.Core.ViewModels
         private readonly IMvxMessenger _mvxMessenger;
         private readonly IProfilerExecuterService _queryExecuterService;
         private readonly IConnectionService _connectionService;
+        private readonly IMvxNavigationService _navManager;
+        private readonly IMapper _mapper;
 
         public QueryEditorViewModel(IMvxMessenger mvxMessenger,
-            IProfilerExecuterService queryExecuterService, IConnectionService connectionService)
+            IProfilerExecuterService queryExecuterService, IConnectionService connectionService,
+            IMvxNavigationService navManager, IMapper mapper)
         {
             _addedQueryEditorTabToken = mvxMessenger.Subscribe<AddedQueryEditorTabMessage>(OnAddedQueryEditorTab);
             _closedQueryEditorTabToken = mvxMessenger.Subscribe<ClosedQueryEditorTabMessage>(CloseEditorTab);
@@ -27,6 +32,8 @@ namespace MvxStarter.Core.ViewModels
             _mvxMessenger = mvxMessenger;
             _queryExecuterService = queryExecuterService;
             _connectionService = connectionService;
+            _navManager = navManager;
+            _mapper = mapper;
             IterationNumber = new TemplateNumericUpDown();
             ThreadNumber = new TemplateNumericUpDown();
             DelayTime = new TemplateNumericUpDown();
@@ -164,6 +171,12 @@ namespace MvxStarter.Core.ViewModels
                         DelayMiliseconds = DelayTime.NumValue,
                         TimeLimitMiliseconds = TimeLimit.NumValue
                     });
+
+                if(results != null)
+                {
+                    var loadResultsViewModel = _mapper.Map<LoadResultsViewModel>(results);
+                    await _navManager.Navigate(loadResultsViewModel);
+                }
             }
         }
 

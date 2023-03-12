@@ -28,6 +28,7 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             _sqlConnectionService = sqlConnectionService;
             _mvxMessenger = mvxMessenger;
             _navManager = navManager;
+            Server = "(localdb)\\MSSQLLocalDB";
         }
 
         private string _server;

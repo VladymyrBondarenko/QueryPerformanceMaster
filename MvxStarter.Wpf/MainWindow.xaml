@@ -9,7 +9,7 @@
         mc:Ignorable="d" Background="Transparent"
         WindowStyle="None"
         AllowsTransparency="true"
-        Height="560" Width="1029">
+        Height="716" Width="1029">
     <Grid>
 
     </Grid>

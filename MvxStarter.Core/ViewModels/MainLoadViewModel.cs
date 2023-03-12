@@ -1,4 +1,5 @@
-﻿using MvvmCross.Commands;
+﻿using AutoMapper;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
@@ -14,10 +15,10 @@ namespace MvxStarter.Core.ViewModels
 
         public MainLoadViewModel(ISqlProviderService sqlProviderService,
             IMvxMessenger mvxMessenger, IProfilerExecuterService profilerExecuterService, 
-            IConnectionService connectionService, IMvxNavigationService navManager)
+            IConnectionService connectionService, IMvxNavigationService navManager, IMapper mapper)
         {
             SqlProviderViewModel = new SqlProvidersViewModel(sqlProviderService, mvxMessenger);
-            QueryEditorViewModel = new QueryEditorViewModel(mvxMessenger, profilerExecuterService, connectionService);
+            QueryEditorViewModel = new QueryEditorViewModel(mvxMessenger, profilerExecuterService, connectionService, navManager, mapper);
             _navManager = navManager;
             CloseWindowCommand = new MvxCommand(async () => await CloseWindow());
         }

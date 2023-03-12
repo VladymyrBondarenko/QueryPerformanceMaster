@@ -1,6 +1,9 @@
-﻿using MvvmCross;
+﻿using AutoMapper;
+using AutoMapper.Collection;
+using MvvmCross;
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
+using MvxStarter.Core.MappingProfiles;
 using MvxStarter.Core.Services;
 using MvxStarter.Core.ViewModels;
 using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
@@ -26,6 +29,10 @@ namespace MvxStarter.Core
         public override void Initialize()
         {
             Mvx.IoCProvider.RegisterSingleton<IMvxMessenger>(new MvxMessengerHub());
+
+            // register automapper
+            var mapper = new Mapper(new MapperConfiguration(x => x.AddProfile<ResponseToModelProfile>()));
+            Mvx.IoCProvider.RegisterSingleton<IMapper>(mapper);
 
             // register connection services
             Mvx.IoCProvider.RegisterType<IConnectionService, ConnectionService>();

@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics.Statistics;
 using QueryPerformanceMaster.Domain.ExecResults;
 using QueryPerformanceMaster.Domain.LoadResults;
+using System.Security.Cryptography.X509Certificates;
 
 namespace QueryPerformanceMaster.Core.ProfilerExecuters
 {
@@ -11,15 +12,20 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
         {
             var res = new LoadExecutedResult();
 
-            var cpuTimes = loadProfilerResults.Select(x => x.CpuTime / 1000).ToList();
+            if(iterationNumber == 0)
+            {
+                return res;
+            }
+
+            var cpuTimes = loadProfilerResults.Select(x => x.CpuTime).ToList();
             var logicalReads = loadProfilerResults.Select(x => x.LogicalReads).ToList();
-            var elapsedTimes = loadProfilerResults.Select(x => x.ElapsedTime / 1000).ToList();
+            var elapsedTimes = loadProfilerResults.Select(x => x.ElapsedTime).ToList();
             var execTimes = loadProfilerResults.Select(x => x.ExecTime).ToList();
 
             //calc total
-            res.CpuTimeTotal = (decimal)cpuTimes.Sum();
+            res.CpuTimeTotal = (decimal)cpuTimes.Sum() / 1000m;
             res.LogicalReadsTotal = (decimal)logicalReads.Sum();
-            res.ElapsedTimeTotal = (decimal)elapsedTimes.Sum();
+            res.ElapsedTimeTotal = (decimal)elapsedTimes.Sum() / 1000m;
 
             foreach (var result in loadProfilerResults)
             {

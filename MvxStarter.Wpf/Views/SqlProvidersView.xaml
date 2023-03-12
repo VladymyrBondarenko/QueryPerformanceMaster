@@ -10,9 +10,9 @@
              xmlns:core="clr-namespace:MvxStarter.Core.Models;assembly=MvxStarter.Core" 
              xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" d:DataContext="{d:DesignInstance Type=viewmodels:SqlProvidersViewModel}"
                 mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="560" d:DesignWidth="1029">
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TreeView ItemsSource="{Binding SqlProviderModels, Mode=TwoWay}" Margin="10,30,636,10" Background="#272537" BorderBrush="Black">
+        <TreeView ItemsSource="{Binding SqlProviderModels, Mode=TwoWay}" Margin="10,30,829,10" Background="#272537" BorderBrush="Black">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />

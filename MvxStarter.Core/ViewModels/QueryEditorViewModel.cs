@@ -2,17 +2,11 @@
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Messages;
-using MvxStarter.Core.Models;
-using MvxStarter.Core.Services;
+using MvxStarter.Core.ViewModels.Controls;
 using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
 using QueryPerformanceMaster.App.Interfaces.LoadExecuters;
 using QueryPerformanceMaster.Domain;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MvxStarter.Core.ViewModels
 {
@@ -33,6 +27,11 @@ namespace MvxStarter.Core.ViewModels
             _mvxMessenger = mvxMessenger;
             _queryExecuterService = queryExecuterService;
             _connectionService = connectionService;
+            IterationNumber = new TemplateNumericUpDown();
+            ThreadNumber = new TemplateNumericUpDown();
+            DelayTime = new TemplateNumericUpDown();
+            TimeLimit = new TemplateNumericUpDown();
+            ProfilerExecuterType = ProfilerExecuterType.SequentialExecutor;
         }
 
         public IMvxCommand RunQueryCommand { get; set; }
@@ -45,6 +44,80 @@ namespace MvxStarter.Core.ViewModels
 			get { return _queryEditorTabs; }
 			set { SetProperty(ref _queryEditorTabs, value); }
 		}
+
+        public List<ProfilerExecuterType> ProfilerExecuterTypes
+        {
+            get
+            {
+                return Enum.GetValues(typeof(ProfilerExecuterType)).Cast<ProfilerExecuterType>().ToList();
+            }
+        }
+
+        private ProfilerExecuterType _profilerExecuterType;
+
+        public ProfilerExecuterType ProfilerExecuterType
+        {
+            get { return _profilerExecuterType; }
+            set 
+            {
+                setInputElementsVisiblity(value);
+
+                SetProperty(ref _profilerExecuterType, value);
+            }
+        }
+
+        private TemplateNumericUpDown _iterationNumber;
+
+        public TemplateNumericUpDown IterationNumber
+        {
+            get { return _iterationNumber; }
+            set { SetProperty(ref _iterationNumber, value); }
+        }
+
+        private TemplateNumericUpDown _threadNumber;
+
+        public TemplateNumericUpDown ThreadNumber
+        {
+            get { return _threadNumber; }
+            set { SetProperty(ref _threadNumber, value); }
+        }
+
+        private TemplateNumericUpDown _delayTime;
+
+        public TemplateNumericUpDown DelayTime
+        {
+            get { return _delayTime; }
+            set { SetProperty(ref _delayTime, value); }
+        }
+
+        private TemplateNumericUpDown _timeLimit;
+
+        public TemplateNumericUpDown TimeLimit
+        {
+            get { return _timeLimit; }
+            set { SetProperty(ref _timeLimit, value); }
+        }
+
+        private string _threadNumberVisible;
+        public string ThreadNumberVisible
+        {
+            get { return _threadNumberVisible; }
+            set { SetProperty(ref _threadNumberVisible, value); }
+        }
+
+        private string _delayTimeVisible;
+        public string DelayTimeVisible
+        {
+            get { return _delayTimeVisible; }
+            set { SetProperty(ref _delayTimeVisible, value); }
+        }
+
+        private string _timeLimitVisible;
+        public string TimeLimitVisible
+        {
+            get { return _timeLimitVisible; }
+            set { SetProperty(ref _timeLimitVisible, value); }
+        }
 
         public void OnAddedQueryEditorTab(AddedQueryEditorTabMessage message)
         {
@@ -77,12 +150,19 @@ namespace MvxStarter.Core.ViewModels
             var activeQueryEditorTab = QueryEditorTabs.FirstOrDefault(x => x.IsSelected);
             if(activeQueryEditorTab != null && !string.IsNullOrWhiteSpace(activeQueryEditorTab.QueryEditorContent))
             {
-                var results = await _queryExecuterService.ExecuteSequentialLoadAsync(
-                    activeQueryEditorTab.QueryEditorContent, 20, 
-                    new SqlConnectionParams 
+                var results = await _queryExecuterService.ExecuteLoadAsync(ProfilerExecuterType, 
+                    new ExecuteLoadParmas 
                     { 
-                        ConnectionString = activeQueryEditorTab.ConnectionString,
-                        SqlProvider = activeQueryEditorTab.SqlProvider
+                        ConnectionParams = new SqlConnectionParams
+                        {
+                            ConnectionString = activeQueryEditorTab.ConnectionString,
+                            SqlProvider = activeQueryEditorTab.SqlProvider
+                        },
+                        Query = activeQueryEditorTab.QueryEditorContent,
+                        IterationNumber = IterationNumber.NumValue,
+                        ThreadNumber = ThreadNumber.NumValue,
+                        DelayMiliseconds = DelayTime.NumValue,
+                        TimeLimitMiliseconds = TimeLimit.NumValue
                     });
             }
         }
@@ -91,6 +171,67 @@ namespace MvxStarter.Core.ViewModels
         {
             var activeQueryEditorTab = QueryEditorTabs.FirstOrDefault(x => x == closedQueryEditorTab.EditorTabViewModel);
             QueryEditorTabs.Remove(activeQueryEditorTab);
+        }
+
+        private void setInputElementsVisiblity(ProfilerExecuterType profilerExecuterType)
+        {
+            switch (profilerExecuterType)
+            {
+                case ProfilerExecuterType.ParallerExecutor:
+                    // set thread number visibility
+                    ThreadNumberVisible = "Visible";
+                    ThreadNumber.ControlVisible = "Visible";
+
+                    // set delay time visibility
+                    DelayTimeVisible = "Hidden";
+                    DelayTime.ControlVisible = "Hidden";
+
+                    // set time limit visibility
+                    TimeLimitVisible = "Hidden";
+                    TimeLimit.ControlVisible = "Hidden";
+                    break;
+                case ProfilerExecuterType.SequentialExecutor:
+                    // set thread number visibility
+                    ThreadNumberVisible = "Hidden";
+                    ThreadNumber.ControlVisible = "Hidden";
+
+                    //set delay time visibility
+                    DelayTimeVisible = "Hidden";
+                    DelayTime.ControlVisible = "Hidden";
+
+                    // set time limit visibility
+                    TimeLimitVisible = "Hidden";
+                    TimeLimit.ControlVisible = "Hidden";
+                    break;
+                case ProfilerExecuterType.SequentialExecutorWithDelay:
+                    // set thread number visibility
+                    ThreadNumberVisible = "Hidden";
+                    ThreadNumber.ControlVisible = "Hidden";
+
+                    // set time limit visibility
+                    TimeLimitVisible = "Hidden";
+                    TimeLimit.ControlVisible = "Hidden";
+
+                    //set delay time visibility
+                    DelayTimeVisible = "Visible";
+                    DelayTime.ControlVisible = "Visible";
+                    break;
+                case ProfilerExecuterType.SequentialExecutorWithTimeLimit:
+                    //set delay time visibility
+                    DelayTimeVisible = "Hidden";
+                    DelayTime.ControlVisible = "Hidden";
+
+                    // set thread number visibility
+                    ThreadNumberVisible = "Hidden";
+                    ThreadNumber.ControlVisible = "Hidden";
+
+                    // set time limit visibility
+                    TimeLimitVisible = "Visible";
+                    TimeLimit.ControlVisible = "Visible";
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -25,8 +25,6 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.ParallelProfilerExecuter
                     iterationNumber, cancellationToken));
             }
 
-            Task.WaitAll(tasks.ToArray());
-
             var completedTasks = await Task.WhenAll(tasks);
             var loadProfilerResult = completedTasks.SelectMany(x => x).ToList();
 

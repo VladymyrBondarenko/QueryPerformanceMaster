@@ -3,11 +3,6 @@ using QueryPerformanceMaster.App.Interfaces.LoadExecuters.Factories;
 using QueryPerformanceMaster.App.Interfaces.LoadProfilers;
 using QueryPerformanceMaster.Domain;
 using QueryPerformanceMaster.Domain.ExecResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QueryPerformanceMaster.Core.ProfilerExecuters
 {
@@ -16,30 +11,53 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
         private readonly ILoadProfilersFactory _loadProfilersFactory;
         private readonly ISequentialProfilerExecuterFactory _sequentialExecuterFactory;
         private readonly IParallelProfilerExecuterFactory _profilerExecuterFactory;
+        private readonly ISequentialProfilerExecuterWithDelayFactory _sequentialExecuterWithDelayFactory;
+        private readonly ISequentialProfilerExecutorWithTimeLimitFactory _sequentialExecuterWithTimeLimitFactory;
 
         public ProfilerExecuterService(ILoadProfilersFactory loadProfilersFactory,
             ISequentialProfilerExecuterFactory sequentialExecuterFactory,
-            IParallelProfilerExecuterFactory profilerExecuterFactory)
+            IParallelProfilerExecuterFactory profilerExecuterFactory,
+            ISequentialProfilerExecuterWithDelayFactory profilerExecuterWithDelayFactory,
+            ISequentialProfilerExecutorWithTimeLimitFactory sequentialExecuterWithTimeLimitFactory)
         {
             _loadProfilersFactory = loadProfilersFactory;
             _sequentialExecuterFactory = sequentialExecuterFactory;
             _profilerExecuterFactory = profilerExecuterFactory;
+            _sequentialExecuterWithDelayFactory = profilerExecuterWithDelayFactory;
+            _sequentialExecuterWithTimeLimitFactory = sequentialExecuterWithTimeLimitFactory;
         }
 
-        public async Task<LoadExecutedResult> ExecuteSequentialLoadAsync(string query, int iterationNumber, SqlConnectionParams connectionParams,
+        public async Task<LoadExecutedResult> ExecuteLoadAsync(ProfilerExecuterType executerType, ExecuteLoadParmas executeLoadParmas,
             CancellationToken cancellationToken = default)
         {
-            var loadProfiler = _loadProfilersFactory.GetLoadProfiler(connectionParams);
-            var seqExecuter = _sequentialExecuterFactory.GetSequentialProfilerExecuter(loadProfiler);
-            return await seqExecuter.ExecuteLoadAsync(query, iterationNumber, cancellationToken);
-        }
+            LoadExecutedResult res = null;
 
-        public async Task<LoadExecutedResult> ExecuteParallelLoadAsync(string query, int threadNumber, int iterationNumber,
-            SqlConnectionParams connectionParams, CancellationToken cancellationToken = default)
-        {
-            var loadProfiler = _loadProfilersFactory.GetLoadProfiler(connectionParams);
-            var parallelExecuter = _profilerExecuterFactory.GetSequentialProfilerExecuter(loadProfiler);
-            return await parallelExecuter.ExecuteLoadAsync(query, threadNumber, iterationNumber, cancellationToken);
+            var loadProfiler = _loadProfilersFactory.GetLoadProfiler(executeLoadParmas.ConnectionParams);
+
+            switch (executerType)
+            {
+                case ProfilerExecuterType.ParallerExecutor:
+                    var parallelExecuter = _profilerExecuterFactory.GetSequentialProfilerExecuter(loadProfiler);
+                    res = await parallelExecuter.ExecuteLoadAsync(
+                        executeLoadParmas.Query, executeLoadParmas.ThreadNumber, executeLoadParmas.IterationNumber, cancellationToken);
+                    break;
+                case ProfilerExecuterType.SequentialExecutor:
+                    var seqExecuter = _sequentialExecuterFactory.GetSequentialProfilerExecuter(loadProfiler);
+                    res = await seqExecuter.ExecuteLoadAsync(executeLoadParmas.Query, executeLoadParmas.IterationNumber, cancellationToken);
+                    break;
+                case ProfilerExecuterType.SequentialExecutorWithDelay:
+                    var seqExecuterWithDelay = _sequentialExecuterWithDelayFactory.GetSequentialProfilerExecuter(loadProfiler);
+                    res = await seqExecuterWithDelay.ExecuteLoadAsync(
+                        executeLoadParmas.Query, executeLoadParmas.IterationNumber, executeLoadParmas.DelayMiliseconds, cancellationToken);
+                    break;
+                case ProfilerExecuterType.SequentialExecutorWithTimeLimit:
+                    var seqExecuterWithTimeLimit = _sequentialExecuterWithTimeLimitFactory.GetSequentialProfilerExecuter(loadProfiler);
+                    res = await seqExecuterWithTimeLimit.ExecuteLoadAsync(
+                        executeLoadParmas.Query, executeLoadParmas.IterationNumber, executeLoadParmas.TimeLimitMiliseconds, cancellationToken);
+                    break;
+            }
+
+            return res;
         }
     }
 }

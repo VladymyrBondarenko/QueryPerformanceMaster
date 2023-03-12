@@ -1,9 +1,7 @@
-﻿using MvvmCross;
-using MvvmCross.Commands;
+﻿using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using MvvmCross.Navigation;
 using MvxStarter.Core.Services;
-using QueryPerformanceMaster.Core.ConnectionProvider.MsSql.ConnectionSettings;
 using QueryPerformanceMaster.Domain.SqlProviders;
 using MvvmCross.Plugin.Messenger;
 using MvxStarter.Core.Messages;

@@ -3,11 +3,6 @@ using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Messages;
 using QueryPerformanceMaster.Domain.SqlProviders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MvxStarter.Core.ViewModels
 {

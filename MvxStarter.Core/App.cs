@@ -15,6 +15,8 @@ using QueryPerformanceMaster.Core.LoadProfilers;
 using QueryPerformanceMaster.Core.ProfilerExecuters;
 using QueryPerformanceMaster.Core.ProfilerExecuters.ParallelProfilerExecuter;
 using QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecuter;
+using QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecuterWithDelay;
+using QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecutorWithTimeLimit;
 using QueryPerformanceMaster.Core.SqlProviderServices.Factory;
 
 namespace MvxStarter.Core
@@ -39,6 +41,8 @@ namespace MvxStarter.Core
             Mvx.IoCProvider.RegisterType<ILoadProfilersFactory, LoadProfilersFactory>();
             Mvx.IoCProvider.RegisterType<IParallelProfilerExecuterFactory, ParallelProfilerExecuterFactory>();
             Mvx.IoCProvider.RegisterType<ISequentialProfilerExecuterFactory, SequentialProfilerExecuterFactory>();
+            Mvx.IoCProvider.RegisterType<ISequentialProfilerExecuterWithDelayFactory, SequentialProfilerExecuterWithDelayFactory>();
+            Mvx.IoCProvider.RegisterType<ISequentialProfilerExecutorWithTimeLimitFactory, SequentialProfilerExecutorWithTimeLimitFactory>();
             Mvx.IoCProvider.RegisterType<IProfilerExecuterService, ProfilerExecuterService>();
 
             RegisterAppStart<MainLoadViewModel>();

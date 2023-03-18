@@ -5,21 +5,26 @@ using QueryPerformanceMaster.Domain.SqlProviders;
 
 namespace QueryPerformanceMaster.Core.SqlProviderServices.Factory
 {
-    public class SqlProviderManagerFactory : ISqlProviderManagerFactory
+    public class SqlProviderServiceFactory : ISqlProviderServiceFactory
     {
-        private readonly IMsSqlConnectionProviderFactory _connectionProviderFactory;
+        private readonly IMsSqlConnectionProviderFactory _msSqlconnectionProviderFactory;
+        private readonly IPostgreSqlConnectionProviderFactory _postgreSqlconnectionProviderFactory;
 
-        public SqlProviderManagerFactory(IMsSqlConnectionProviderFactory connectionProviderFactory)
+        public SqlProviderServiceFactory(IMsSqlConnectionProviderFactory connectionProviderFactory,
+            IPostgreSqlConnectionProviderFactory postgreSqlconnectionProviderFactory)
         {
-            _connectionProviderFactory = connectionProviderFactory;
+            _msSqlconnectionProviderFactory = connectionProviderFactory;
+            _postgreSqlconnectionProviderFactory = postgreSqlconnectionProviderFactory;
         }
 
-        public ISqlProviderManager GetSqlProviderService(SqlConnectionParams connectionParams)
+        public ISqlProviderService GetSqlProviderService(SqlConnectionParams connectionParams)
         {
             switch (connectionParams.SqlProvider)
             {
                 case SqlProvider.SqlServer:
-                    return new MsSqlProviderManager(_connectionProviderFactory, connectionParams.ConnectionString);
+                    return new MsSqlProviderService(_msSqlconnectionProviderFactory, connectionParams.ConnectionString);
+                case SqlProvider.PostgreSql:
+                    return new PostgreSqlProviderService(_postgreSqlconnectionProviderFactory, connectionParams.ConnectionString);
             }
 
             throw new NotImplementedException();

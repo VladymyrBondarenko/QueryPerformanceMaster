@@ -29,7 +29,8 @@
                     <TextBlock Text="{Binding Path=Name}" Foreground="White" FontSize="17" >
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Create Query">
+                                <MenuItem x:Name="MainMenuitem" Header="Create Query" Background="White" BorderThickness="0" 
+                                          BorderBrush="White" Foreground="Black">
                                     <MenuItem.InputBindings>
                                         <MouseBinding Command="{Binding CreateQueryCommand}" MouseAction="LeftClick" />
                                     </MenuItem.InputBindings>

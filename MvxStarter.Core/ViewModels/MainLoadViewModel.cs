@@ -13,11 +13,11 @@ namespace MvxStarter.Core.ViewModels
     {
         private readonly IMvxNavigationService _navManager;
 
-        public MainLoadViewModel(ISqlProviderService sqlProviderService,
+        public MainLoadViewModel(ISqlProviderManager sqlProviderManager,
             IMvxMessenger mvxMessenger, IProfilerExecuterService profilerExecuterService, 
             IConnectionService connectionService, IMvxNavigationService navManager, IMapper mapper)
         {
-            SqlProviderViewModel = new SqlProvidersViewModel(sqlProviderService, mvxMessenger);
+            SqlProviderViewModel = new SqlProvidersViewModel(sqlProviderManager, mvxMessenger);
             QueryEditorViewModel = new QueryEditorViewModel(mvxMessenger, profilerExecuterService, connectionService, navManager, mapper);
             _navManager = navManager;
             CloseWindowCommand = new MvxCommand(async () => await CloseWindow());

@@ -35,7 +35,16 @@ namespace MvxStarter.Core.Models
                 if (value && !Databases.Any(x => !string.IsNullOrWhiteSpace(x.Name)))
                 {
                     var navManager = Mvx.IoCProvider.Resolve<IMvxNavigationService>();
-                    navManager.Navigate<MsSqlConnectionParamsViewModel>();
+
+                    switch (SqlProvider)
+                    {
+                        case SqlProvider.SqlServer:
+                            navManager.Navigate<MsSqlConnectionParamsViewModel>();
+                            break;
+                        case SqlProvider.PostgreSql:
+                            navManager.Navigate<PostgreSqlConnectionParamsViewModel>();
+                            break;
+                    }
                 }
                 _IsExpanded = value;
             }

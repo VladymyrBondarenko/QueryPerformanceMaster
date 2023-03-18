@@ -10,12 +10,12 @@ namespace MvxStarter.Core.ViewModels
     public class SqlProvidersViewModel : MvxViewModel
     {
         private readonly MvxSubscriptionToken _loadedDatabasesToken;
-        private readonly ISqlProviderService _sqlProviderService;
+        private readonly ISqlProviderManager _sqlProviderManager;
 
-        public SqlProvidersViewModel(ISqlProviderService sqlProviderService,
+        public SqlProvidersViewModel(ISqlProviderManager sqlProviderManager,
             IMvxMessenger mvxMessenger)
         {
-            _sqlProviderService = sqlProviderService;
+            _sqlProviderManager = sqlProviderManager;
             _loadedDatabasesToken = mvxMessenger.Subscribe<LoadedDatabasesMessage>(OnLoadedDatabases);
         }
 
@@ -30,7 +30,7 @@ namespace MvxStarter.Core.ViewModels
         {
             await base.Initialize();
 
-            SqlProviderModels = new ObservableCollection<SqlProviderModel>(_sqlProviderService.GetSqlProviders());
+            SqlProviderModels = new ObservableCollection<SqlProviderModel>(_sqlProviderManager.GetSqlProviders());
         }
 
         public void OnLoadedDatabases(LoadedDatabasesMessage message)

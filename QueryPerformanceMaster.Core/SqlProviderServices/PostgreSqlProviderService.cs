@@ -1,16 +1,16 @@
-﻿using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
+﻿using Npgsql;
+using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
 using QueryPerformanceMaster.App.Interfaces.SqlProviderServices;
 using QueryPerformanceMaster.Domain.SqlProviders;
-using System.Data.SqlClient;
 
 namespace QueryPerformanceMaster.Core.SqlProviderServices
 {
-    internal class MsSqlProviderService : ISqlProviderService
+    internal class PostgreSqlProviderService : ISqlProviderService
     {
-        private readonly IMsSqlConnectionProviderFactory _connectionProviderFactory;
+        private readonly IPostgreSqlConnectionProviderFactory _connectionProviderFactory;
         private readonly string _connectionString;
 
-        public MsSqlProviderService(IMsSqlConnectionProviderFactory connectionProviderFactory, string connectionString)
+        public PostgreSqlProviderService(IPostgreSqlConnectionProviderFactory connectionProviderFactory, string connectionString)
         {
             _connectionProviderFactory = connectionProviderFactory;
             _connectionString = connectionString;
@@ -18,10 +18,10 @@ namespace QueryPerformanceMaster.Core.SqlProviderServices
 
         public async Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync()
         {
-            const string query = "SELECT databases.name FROM sys.databases WHERE databases.state = 0 ORDER BY databases.name";
+            const string query = "SELECT datname FROM pg_database WHERE datistemplate = false ORDER BY datname";
 
             var connectionProvider = _connectionProviderFactory.GetConnectionProvider(_connectionString);
-            SqlConnection sqlConnection = null;
+            NpgsqlConnection sqlConnection = null;
             var databases = new List<SqlProviderDatabase>();
 
             try
@@ -36,10 +36,10 @@ namespace QueryPerformanceMaster.Core.SqlProviderServices
                     databases.Add(new SqlProviderDatabase { Name = (string)reader[0] });
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return new GetProviderDatabasesResult(false) 
-                { 
+                return new GetProviderDatabasesResult(false)
+                {
                     ErrorMessage = ex.Message
                 };
             }

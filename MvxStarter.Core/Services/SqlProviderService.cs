@@ -1,24 +1,17 @@
 ﻿using MvxStarter.Core.Models;
 using QueryPerformanceMaster.App.Interfaces.SqlProviderServices;
-using QueryPerformanceMaster.Core;
 using QueryPerformanceMaster.Domain;
 using QueryPerformanceMaster.Domain.SqlProviders;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MvxStarter.Core.Services
 {
-    internal class SqlProviderService : ISqlProviderService
-    {
-        private readonly ISqlProviderManagerFactory _sqlProviderManagerFactory;
+    internal class SqlProviderManager : ISqlProviderManager 
+    { 
+        private readonly ISqlProviderServiceFactory _sqlProviderServiceFactory;
 
-        public SqlProviderService(ISqlProviderManagerFactory sqlProviderManager)
+        public SqlProviderManager(ISqlProviderServiceFactory sqlProviderService)
         {
-            _sqlProviderManagerFactory = sqlProviderManager;
+            _sqlProviderServiceFactory = sqlProviderService;
         }
 
         public List<SqlProviderModel> GetSqlProviders()
@@ -40,7 +33,7 @@ namespace MvxStarter.Core.Services
 
         public async Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync(SqlProvider sqlProvider, string connectionString)
         {
-            var sqlProviderManager = _sqlProviderManagerFactory.GetSqlProviderService(new SqlConnectionParams
+            var sqlProviderManager = _sqlProviderServiceFactory.GetSqlProviderService(new SqlConnectionParams
             {
                 SqlProvider = sqlProvider,
                 ConnectionString = connectionString

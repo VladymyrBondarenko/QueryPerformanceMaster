@@ -1,10 +1,9 @@
 ﻿using QueryPerformanceMaster.Domain;
-using QueryPerformanceMaster.Domain.SqlProviders;
 
 namespace QueryPerformanceMaster.App.Interfaces.SqlProviderServices
 {
-    public interface ISqlProviderManagerFactory
+    public interface ISqlProviderServiceFactory
     {
-        ISqlProviderManager GetSqlProviderService(SqlConnectionParams connectionParams);
+        ISqlProviderService GetSqlProviderService(SqlConnectionParams connectionParams);
     }
 }

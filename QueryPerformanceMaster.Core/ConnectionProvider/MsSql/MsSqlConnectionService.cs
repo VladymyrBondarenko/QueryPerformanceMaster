@@ -1,24 +1,16 @@
-﻿using MathNet.Numerics;
-using System.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 using QueryPerformanceMaster.Domain.ConnectionSettings;
 using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
-using System.Text.Json;
-using Newtonsoft.Json;
 
-namespace QueryPerformanceMaster.Core.ConnectionProvider.MsSql.ConnectionSettings
+namespace QueryPerformanceMaster.Core.ConnectionProvider.MsSql
 {
     public class MsSqlConnectionService : IMsSqlConnectionService
     {
         public MsSqlConnectionSettings GetMsSqlConnectionSettings(string connectionString)
         {
             var builder = new SqlConnectionStringBuilder(connectionString);
-            return new MsSqlConnectionSettings 
-            { 
+            return new MsSqlConnectionSettings
+            {
                 Server = builder.DataSource,
                 IntegratedAuth = builder.IntegratedSecurity,
                 ApplicationIntent = builder.ApplicationIntent,

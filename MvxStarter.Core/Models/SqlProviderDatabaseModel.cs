@@ -28,5 +28,7 @@ namespace MvxStarter.Core.Models
         public string ConnectionString { get; set; }
 
         public IMvxCommand CreateQueryCommand { get; set; }
+
+        public bool IsExpanded { get; set; }
     }
 }

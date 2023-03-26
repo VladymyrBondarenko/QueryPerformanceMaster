@@ -7,6 +7,7 @@ using MvvmCross.Plugin.Messenger;
 using MvxStarter.Core.Messages;
 using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
 using QueryPerformanceMaster.Domain.ConnectionSettings;
+using System.Text;
 
 namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
 {
@@ -157,7 +158,11 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             }
             else
             {
-                // TODO: error message
+                var sb = new StringBuilder();
+                sb.AppendLine("Unable to connect to provider, try again.");
+                sb.AppendLine($"Error: '{getDatabasesResult.ErrorMessage}'");
+
+                _mvxMessenger.Publish(new ConnectionErrorMessage(this, sb.ToString(), "Connection error"));
             }
         }
 

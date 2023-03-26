@@ -1,4 +1,7 @@
-﻿using MvvmCross.Platforms.Wpf.Views;
+﻿using MvvmCross;
+using MvvmCross.Platforms.Wpf.Views;
+using MvvmCross.Plugin.Messenger;
+using MvxStarter.Core.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +27,14 @@ namespace MvxStarter.Wpf.Views
         public MsSqlConnectionParamsView()
         {
             InitializeComponent();
+
+            var messanger = Mvx.IoCProvider.Resolve<IMvxMessenger>();
+            _mvxSubscriptionToken = messanger.Subscribe<ConnectionErrorMessage>((e) =>
+            {
+                MessageBox.Show(e.ErrorMessage, e.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+            });
         }
+
+        private MvxSubscriptionToken? _mvxSubscriptionToken;
     }
 }

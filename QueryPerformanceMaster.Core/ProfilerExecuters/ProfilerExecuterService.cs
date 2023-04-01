@@ -37,21 +37,21 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
             switch (executerType)
             {
                 case ProfilerExecuterType.ParallerExecutor:
-                    var parallelExecuter = _profilerExecuterFactory.GetSequentialProfilerExecuter(loadProfiler);
+                    var parallelExecuter = _profilerExecuterFactory.GetProfilerExecuter(loadProfiler);
                     res = await parallelExecuter.ExecuteLoadAsync(
                         executeLoadParmas.Query, executeLoadParmas.ThreadNumber, executeLoadParmas.IterationNumber, cancellationToken);
                     break;
                 case ProfilerExecuterType.SequentialExecutor:
-                    var seqExecuter = _sequentialExecuterFactory.GetSequentialProfilerExecuter(loadProfiler);
+                    var seqExecuter = _sequentialExecuterFactory.GetProfilerExecuter(loadProfiler);
                     res = await seqExecuter.ExecuteLoadAsync(executeLoadParmas.Query, executeLoadParmas.IterationNumber, cancellationToken);
                     break;
                 case ProfilerExecuterType.SequentialExecutorWithDelay:
-                    var seqExecuterWithDelay = _sequentialExecuterWithDelayFactory.GetSequentialProfilerExecuter(loadProfiler);
+                    var seqExecuterWithDelay = _sequentialExecuterWithDelayFactory.GetProfilerExecuter(loadProfiler);
                     res = await seqExecuterWithDelay.ExecuteLoadAsync(
                         executeLoadParmas.Query, executeLoadParmas.IterationNumber, executeLoadParmas.DelayMiliseconds, cancellationToken);
                     break;
                 case ProfilerExecuterType.SequentialExecutorWithTimeLimit:
-                    var seqExecuterWithTimeLimit = _sequentialExecuterWithTimeLimitFactory.GetSequentialProfilerExecuter(loadProfiler);
+                    var seqExecuterWithTimeLimit = _sequentialExecuterWithTimeLimitFactory.GetProfilerExecuter(loadProfiler);
                     res = await seqExecuterWithTimeLimit.ExecuteLoadAsync(
                         executeLoadParmas.Query, executeLoadParmas.IterationNumber, executeLoadParmas.TimeLimitMiliseconds, cancellationToken);
                     break;

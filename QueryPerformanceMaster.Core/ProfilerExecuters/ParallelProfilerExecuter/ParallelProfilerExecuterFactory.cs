@@ -11,7 +11,7 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.ParallelProfilerExecuter
 {
     public class ParallelProfilerExecuterFactory : IParallelProfilerExecuterFactory
     {
-        public IParallelProfilerExecuter GetSequentialProfilerExecuter(ILoadProfiler loadProfiler)
+        public IParallelProfilerExecuter GetProfilerExecuter(ILoadProfiler loadProfiler)
         {
             var sequentialProfiler = new ParallelProfilerExecuter(loadProfiler);
             return sequentialProfiler;

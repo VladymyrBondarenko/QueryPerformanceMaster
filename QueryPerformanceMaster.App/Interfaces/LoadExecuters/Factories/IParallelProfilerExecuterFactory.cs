@@ -5,6 +5,6 @@ namespace QueryPerformanceMaster.App.Interfaces.LoadExecuters.Factories
 {
     public interface IParallelProfilerExecuterFactory
     {
-        IParallelProfilerExecuter GetSequentialProfilerExecuter(ILoadProfiler loadProfiler);
+        IParallelProfilerExecuter GetProfilerExecuter(ILoadProfiler loadProfiler);
     }
 }

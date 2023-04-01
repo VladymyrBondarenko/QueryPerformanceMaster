@@ -5,6 +5,6 @@ namespace QueryPerformanceMaster.App.Interfaces.LoadExecuters.Factories
 {
     public interface ISequentialProfilerExecuterFactory
     {
-        ISequentialProfilerExecuter GetSequentialProfilerExecuter(ILoadProfiler loadProfiler);
+        ISequentialProfilerExecuter GetProfilerExecuter(ILoadProfiler loadProfiler);
     }
 }

@@ -11,7 +11,7 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecut
 {
     public class SequentialProfilerExecuterWithDelayFactory : ISequentialProfilerExecuterWithDelayFactory
     {
-        public ISequentialProfilerExecuterWithDelay GetSequentialProfilerExecuter(ILoadProfiler loadProfiler)
+        public ISequentialProfilerExecuterWithDelay GetProfilerExecuter(ILoadProfiler loadProfiler)
         {
             var profiler = new SequentialProfilerExecuterWithDelay(loadProfiler);
             return profiler;

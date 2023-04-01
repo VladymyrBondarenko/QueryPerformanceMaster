@@ -6,7 +6,7 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecut
 {
     public class SequentialProfilerExecuterFactory : ISequentialProfilerExecuterFactory
     {
-        public ISequentialProfilerExecuter GetSequentialProfilerExecuter(ILoadProfiler loadProfiler)
+        public ISequentialProfilerExecuter GetProfilerExecuter(ILoadProfiler loadProfiler)
         {
             var sequentialProfiler = new SequentialProfilerExecuter(loadProfiler);
             return sequentialProfiler;

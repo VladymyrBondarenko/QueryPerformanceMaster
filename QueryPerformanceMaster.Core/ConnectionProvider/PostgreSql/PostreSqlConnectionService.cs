@@ -37,7 +37,7 @@ namespace QueryPerformanceMaster.Core.ConnectionProvider.PostgreSql
                 Password = settings.Password
             };
 
-            if (settings.Database.Length > 0)
+            if (!string.IsNullOrWhiteSpace(settings.Database))
             {
                 build.Database = settings.Database;
             }

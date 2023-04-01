@@ -4,6 +4,7 @@ using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Messages;
 using MvxStarter.Core.Services;
+using MvxStarter.Core.ViewModels.Controls;
 using QueryPerformanceMaster.Core.ConnectionProvider.PostgreSql;
 using QueryPerformanceMaster.Domain.ConnectionSettings;
 using QueryPerformanceMaster.Domain.SqlProviders;
@@ -29,6 +30,8 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             _mvxMessenger = mvxMessenger;
             _navManager = navManager;
             Server = "127.0.0.1";
+            ConnectionTimeout = new TemplateNumericUpDown { NumValue = 15 };
+            Pooling = true;
         }
 
         private SqlProvider SqlProvider => SqlProvider.PostgreSql;
@@ -73,29 +76,24 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             }
         }
 
-        private string _defaultDatabase;
+        private TemplateNumericUpDown _connectionTimeout;
 
-        public string DefaultDatabase
+        public TemplateNumericUpDown ConnectionTimeout
         {
-            get { return _defaultDatabase; }
-            set { SetProperty(ref _defaultDatabase, value); }
+            get { return _connectionTimeout; }
+            set { SetProperty(ref _connectionTimeout, value); }
         }
 
-        private List<string> _databases;
-
-        public List<string> Databases
+        private bool _pooling;
+        public bool Pooling
         {
-            get { return _databases; }
-            set { SetProperty(ref _databases, value); }
-        }
-
-        private bool _isDatabasesComboBoxOpen;
-        public bool IsDatabasesComboBoxOpen
-        {
-            get { return _isDatabasesComboBoxOpen; }
+            get
+            {
+                return _pooling;
+            }
             set
             {
-                SetProperty(ref _isDatabasesComboBoxOpen, value);
+                SetProperty(ref _pooling, value);
             }
         }
 
@@ -109,7 +107,10 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             {
                 Server = Server,
                 Login = Login,
-                Password = Password
+                Password = Password,
+                Port = Port,
+                ConnectTimeout = ConnectionTimeout.NumValue,
+                EnablePooling = Pooling
             };
             var connectionString = _sqlConnectionService.GetConnectionString(connectionSettings);
 

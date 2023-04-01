@@ -8,6 +8,7 @@ using MvxStarter.Core.Messages;
 using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
 using QueryPerformanceMaster.Domain.ConnectionSettings;
 using System.Text;
+using MvxStarter.Core.ViewModels.Controls;
 
 namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
 {
@@ -30,6 +31,8 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             _mvxMessenger = mvxMessenger;
             _navManager = navManager;
             Server = "(localdb)\\MSSQLLocalDB";
+            ConnectionTimeout = new TemplateNumericUpDown { NumValue = 15 };
+            Pooling = true;
         }
 
         private string _server;
@@ -107,32 +110,26 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             }
         }
 
-        private string _defaultDatabase;
+        private TemplateNumericUpDown _connectionTimeout;
 
-        public string DefaultDatabase
+        public TemplateNumericUpDown ConnectionTimeout
         {
-            get { return _defaultDatabase; }
-            set { SetProperty(ref _defaultDatabase, value); }
+            get { return _connectionTimeout; }
+            set { SetProperty(ref _connectionTimeout, value); }
         }
 
-        private List<string> _databases;
-
-        public List<string> Databases
+        private bool _pooling;
+        public bool Pooling
         {
-            get { return _databases; }
-            set { SetProperty(ref _databases, value); }
-        }
-
-        private bool _isDatabasesComboBoxOpen;
-        public bool IsDatabasesComboBoxOpen
-        {
-            get { return _isDatabasesComboBoxOpen; }
+            get
+            {
+                return _pooling;
+            }
             set
             {
-                SetProperty(ref _isDatabasesComboBoxOpen, value);
+                SetProperty(ref _pooling, value);
             }
         }
-
 
         public IMvxCommand SaveConnectionParamsCommand { get; set; }
 
@@ -145,7 +142,9 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
                 Server = Server,
                 IntegratedAuth = Authentication == Authentication.IntegratedAuthentication,
                 Login = Login,
-                Password = Password
+                Password = Password,
+                EnablePooling = Pooling,
+                ConnectTimeout = ConnectionTimeout.NumValue
             };
             var connectionString = _sqlConnectionService.GetConnectionString(connectionSettings);
 

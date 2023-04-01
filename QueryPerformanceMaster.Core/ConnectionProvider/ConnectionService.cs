@@ -36,5 +36,27 @@ namespace QueryPerformanceMaster.Core.ConnectionProvider
 
             return resultConnectionString;
         }
+
+        public string SetPoolSizeToConnectionString(SqlProvider sqlProvider, string connectionString, int poolSize)
+        {
+            var resultConnectionString = string.Empty;
+
+            if (sqlProvider == SqlProvider.SqlServer)
+            {
+                var settings = _msSqlConnectionService.GetMsSqlConnectionSettings(connectionString);
+                settings.MaxPoolSize = poolSize;
+
+                resultConnectionString = _msSqlConnectionService.GetConnectionString(settings);
+            }
+            else if (sqlProvider == SqlProvider.PostgreSql)
+            {
+                var settings = _postgreSqlConnectionService.GetPostgreSqlConnectionSettings(connectionString);
+                settings.MaxPoolSize = poolSize;
+
+                resultConnectionString = _postgreSqlConnectionService.GetConnectionString(settings);
+            }
+
+            return resultConnectionString;
+        }
     }
 }

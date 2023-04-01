@@ -157,12 +157,19 @@ namespace MvxStarter.Core.ViewModels
             var activeQueryEditorTab = QueryEditorTabs.FirstOrDefault(x => x.IsSelected);
             if(activeQueryEditorTab != null && !string.IsNullOrWhiteSpace(activeQueryEditorTab.QueryEditorContent))
             {
+                var connectionString = activeQueryEditorTab.ConnectionString;
+                if (ThreadNumber.NumValue > 0)
+                {
+                    // set pool size as threads number
+                    connectionString = _connectionService.SetPoolSizeToConnectionString(activeQueryEditorTab.SqlProvider, connectionString, ThreadNumber.NumValue);
+                }
+
                 var results = await _queryExecuterService.ExecuteLoadAsync(ProfilerExecuterType, 
                     new ExecuteLoadParmas 
                     { 
                         ConnectionParams = new SqlConnectionParams
                         {
-                            ConnectionString = activeQueryEditorTab.ConnectionString,
+                            ConnectionString = connectionString,
                             SqlProvider = activeQueryEditorTab.SqlProvider
                         },
                         Query = activeQueryEditorTab.QueryEditorContent,

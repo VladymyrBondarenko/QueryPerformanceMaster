@@ -16,15 +16,15 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
                 return res;
             }
 
-            var cpuTimes = loadProfilerResults.Select(x => x.CpuTime).ToList();
+            var cpuTimes = loadProfilerResults.Select(x => x.CpuTime / 1000d).ToList();
             var logicalReads = loadProfilerResults.Select(x => x.LogicalReads).ToList();
-            var elapsedTimes = loadProfilerResults.Select(x => x.ElapsedTime).ToList();
+            var elapsedTimes = loadProfilerResults.Select(x => x.ElapsedTime / 1000d).ToList();
             var execTimes = loadProfilerResults.Select(x => x.ExecTime).ToList();
 
             //calc total
-            res.CpuTimeTotal = Math.Round((decimal)cpuTimes.Sum() / 1000m, 4);
+            res.CpuTimeTotal = Math.Round((decimal)cpuTimes.Sum(), 4);
             res.LogicalReadsTotal = Math.Round((decimal)logicalReads.Sum(), 4);
-            res.ElapsedTimeTotal = Math.Round((decimal)elapsedTimes.Sum() / 1000m, 4);
+            res.ElapsedTimeTotal = Math.Round((decimal)elapsedTimes.Sum(), 4);
 
             foreach (var result in loadProfilerResults)
             {

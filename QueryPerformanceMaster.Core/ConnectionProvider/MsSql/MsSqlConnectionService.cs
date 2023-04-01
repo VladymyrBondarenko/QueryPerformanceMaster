@@ -39,7 +39,7 @@ namespace QueryPerformanceMaster.Core.ConnectionProvider.MsSql
                 build.Password = settings.Password;
             }
 
-            if (settings.Database.Length > 0)
+            if (!string.IsNullOrWhiteSpace(settings.Database))
             {
                 build.InitialCatalog = settings.Database;
             }

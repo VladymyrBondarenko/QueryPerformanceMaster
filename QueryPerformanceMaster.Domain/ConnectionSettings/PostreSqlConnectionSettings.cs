@@ -22,11 +22,6 @@ namespace QueryPerformanceMaster.Domain.ConnectionSettings
         public PostreSqlConnectionSettings()
         {
             Server = "(local)";
-            Login = string.Empty;
-            Password = string.Empty;
-            Database = string.Empty;
-            ConnectTimeout = 0;
-            MaxPoolSize = 0;
             EnablePooling = true;
         }
     }

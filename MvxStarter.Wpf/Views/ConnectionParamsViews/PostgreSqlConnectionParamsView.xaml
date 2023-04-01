@@ -7,10 +7,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MvxStarter.Wpf.Views.ConnectionParamsViews"
-             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels.ConnectionParamsViewModels;assembly=MvxStarter.Core" d:DataContext="{d:DesignInstance Type=viewmodels:PostgreSqlConnectionParamsViewModel}" 
+             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels.ConnectionParamsViewModels;assembly=MvxStarter.Core" xmlns:UserControlTemplate="clr-namespace:UserControlTemplate" d:DataContext="{d:DesignInstance Type=viewmodels:PostgreSqlConnectionParamsViewModel}" 
              mc:Ignorable="d" 
              Width="340" Height="402">
-    <Border Background="#272537" CornerRadius="20" Margin="0,0,0,19">
+    <Border Background="#272537" CornerRadius="20" Margin="0,0,0,-74">
         <Grid Margin="16,10,16,22">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -33,7 +33,7 @@
                 </TextBox.Resources>
             </TextBox>
             <Label Content="Login" HorizontalAlignment="Left" Margin="23,122,0,0" VerticalAlignment="Top" Height="26" Width="39" Foreground="White"/>
-            <TextBox Text="{Binding Login, Mode=TwoWay}" IsEnabled="{Binding IsLoginEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="23,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18">
+            <TextBox Text="{Binding Login, Mode=TwoWay}" HorizontalAlignment="Left" Margin="23,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3"/>
@@ -41,22 +41,14 @@
                 </TextBox.Resources>
             </TextBox>
             <Label Content="Password" HorizontalAlignment="Left" Margin="23,177,0,0" VerticalAlignment="Top" Height="26" Width="60" Foreground="White"/>
-            <TextBox Text="{Binding Password, Mode=TwoWay}" IsEnabled="{Binding IsPasswordEnabled,Mode=TwoWay}" HorizontalAlignment="Left" Margin="23,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18">
+            <TextBox Text="{Binding Password, Mode=TwoWay}" HorizontalAlignment="Left" Margin="23,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="18">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3"/>
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <ComboBox IsDropDownOpen="{Binding IsDatabasesComboBoxOpen}" SelectedItem="{Binding DefaultDatabase, Mode=TwoWay}" ItemsSource="{Binding Databases}" HorizontalAlignment="Left" Margin="23,255,0,0" VerticalAlignment="Top" Width="268" Height="22">
-                <ComboBox.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </ComboBox.Resources>
-            </ComboBox>
-            <Label Content="Default Database" HorizontalAlignment="Left" Margin="23,226,0,0" VerticalAlignment="Top" Height="26" Width="101" Foreground="White"/>
-            <Button Command="{Binding SaveConnectionParamsCommand}" Content="Save" HorizontalAlignment="Left" Margin="251,297,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.867,-2.063" Width="40" Background="White">
+            <Button Command="{Binding SaveConnectionParamsCommand}" Content="Save" HorizontalAlignment="Left" Margin="251,403,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.867,-2.063" Width="40" Background="White">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3"/>
@@ -87,6 +79,26 @@
                     </Style>
                 </Button.Resources>
             </Button>
+
+            <Expander HorizontalAlignment="Center" Height="151" Header="Advanced" Margin="0,231,0,0" VerticalAlignment="Top" Width="274" Foreground="White">
+                <GroupBox Header="Connection Options" Foreground="White" BorderBrush="#FF673AB7" Grid.Row="1" Margin="5,0,5,0">
+                    <Grid Margin="5 5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition  Height="25"/>
+                            <RowDefinition  Height="40"/>
+                            <RowDefinition  Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Content="Connection Timeout" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White"/>
+                        <UserControlTemplate:TemplateNumericUpDown DataContext="{Binding ConnectionTimeout, Mode=TwoWay}" Grid.Row="1" Width="84" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10 0" />
+                        <CheckBox IsChecked="{Binding Pooling, Mode=TwoWay}" Content="Enable Connection Pooling" HorizontalAlignment="Left" Margin="5 0" Grid.Row="2" VerticalAlignment="Center" Foreground="White"/>
+                    </Grid>
+                </GroupBox>
+
+            </Expander>
         </Grid>
     </Border>
 </views:MvxWpfView>

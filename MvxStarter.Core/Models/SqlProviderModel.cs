@@ -2,11 +2,21 @@
 using MvvmCross;
 using QueryPerformanceMaster.Domain.SqlProviders;
 using MvxStarter.Core.ViewModels.ConnectionParamsViewModels;
+using MvvmCross.Commands;
+using MvxStarter.Core.Services;
 
 namespace MvxStarter.Core.Models
 {
     public class SqlProviderModel
     {
+        public SqlProviderModel()
+        {
+            var providerService = Mvx.IoCProvider.Resolve<ISqlProviderManager>();
+            OpenConnectionParamsViewCommand = new MvxCommand(async () => await providerService.OpenConnectionParamsView(SqlProvider, ConnectionString));
+        }
+
+        public IMvxCommand OpenConnectionParamsViewCommand { get; set; }
+
         public string Name { get; set; }
 
         public string IconPath { get; set; }
@@ -34,17 +44,7 @@ namespace MvxStarter.Core.Models
             {
                 if (value && !Databases.Any(x => !string.IsNullOrWhiteSpace(x.Name)))
                 {
-                    var navManager = Mvx.IoCProvider.Resolve<IMvxNavigationService>();
-
-                    switch (SqlProvider)
-                    {
-                        case SqlProvider.SqlServer:
-                            navManager.Navigate<MsSqlConnectionParamsViewModel>();
-                            break;
-                        case SqlProvider.PostgreSql:
-                            navManager.Navigate<PostgreSqlConnectionParamsViewModel>();
-                            break;
-                    }
+                    OpenConnectionParamsViewCommand.Execute();
                 }
                 _IsExpanded = value;
             }

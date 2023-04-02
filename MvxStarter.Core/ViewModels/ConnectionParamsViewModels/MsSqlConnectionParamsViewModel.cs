@@ -151,7 +151,7 @@ namespace MvxStarter.Core.ViewModels.ConnectionParamsViewModels
             var getDatabasesResult = await _sqlProviderManager.GetSqlProviderDatabasesAsync(SqlProvider.SqlServer, connectionString);
             if (getDatabasesResult.Success)
             {
-                _mvxMessenger.Publish(new LoadedDatabasesMessage(this, 
+                _mvxMessenger.Publish(new ConnectedToSqlProviderMessage(this, 
                     SqlProvider.SqlServer, getDatabasesResult.SqlProviderDatabases.Select(x => x.Name).ToList(), connectionString));
                 await _navManager.Close(this);
             }

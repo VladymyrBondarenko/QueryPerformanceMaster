@@ -7,5 +7,6 @@ namespace MvxStarter.Core.Services
     {
         Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync(SqlProvider sqlProvider, string connectionString);
         List<SqlProviderModel> GetSqlProviders();
+        Task OpenConnectionParamsView(SqlProvider sqlProvider, string connectionString = null);
     }
 }

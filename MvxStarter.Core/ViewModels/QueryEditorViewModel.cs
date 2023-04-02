@@ -16,6 +16,7 @@ namespace MvxStarter.Core.ViewModels
     {
         private readonly MvxSubscriptionToken _addedQueryEditorTabToken;
         private readonly MvxSubscriptionToken _closedQueryEditorTabToken;
+        private readonly MvxSubscriptionToken _loadedDatabasesToken;
         private readonly IMvxMessenger _mvxMessenger;
         private readonly IProfilerExecuterService _queryExecuterService;
         private readonly IConnectionService _connectionService;
@@ -28,6 +29,7 @@ namespace MvxStarter.Core.ViewModels
         {
             _addedQueryEditorTabToken = mvxMessenger.Subscribe<AddedQueryEditorTabMessage>(OnAddedQueryEditorTab);
             _closedQueryEditorTabToken = mvxMessenger.Subscribe<ClosedQueryEditorTabMessage>(CloseEditorTab);
+            _loadedDatabasesToken = mvxMessenger.Subscribe<ConnectedToSqlProviderMessage>(OnConnectedToSqlProvider);
             RunQueryCommand = new MvxCommand(async () => await RunQueryAsync());
             _mvxMessenger = mvxMessenger;
             _queryExecuterService = queryExecuterService;
@@ -152,6 +154,24 @@ namespace MvxStarter.Core.ViewModels
             return base.Initialize();
         }
 
+        private void OnConnectedToSqlProvider(ConnectedToSqlProviderMessage message)
+        {
+            var editorTabsByProvider = QueryEditorTabs.Where(x => x.SqlProvider == message.SqlProvider).ToList();
+
+            foreach (var editorTab in editorTabsByProvider)
+            {
+                // close tabs with databases that are not longer existing after save connection params
+                if (!message.Databases.Contains(editorTab.Database))
+                {
+                    CloseEditorTab(editorTab);
+                    continue;
+                }
+
+                // otherwise - apply new connection string to tab
+                editorTab.ConnectionString = _connectionService.SetDatabaseToConnectionString(message.SqlProvider, message.ConnectionString, editorTab.Database);
+            }
+        }
+
         private async Task RunQueryAsync()
         {
             var activeQueryEditorTab = QueryEditorTabs.FirstOrDefault(x => x.IsSelected);
@@ -190,7 +210,12 @@ namespace MvxStarter.Core.ViewModels
         private void CloseEditorTab(ClosedQueryEditorTabMessage closedQueryEditorTab)
         {
             var activeQueryEditorTab = QueryEditorTabs.FirstOrDefault(x => x == closedQueryEditorTab.EditorTabViewModel);
-            QueryEditorTabs.Remove(activeQueryEditorTab);
+            CloseEditorTab(activeQueryEditorTab);
+        }
+
+        private void CloseEditorTab(QueryEditorTabViewModel editorTabViewModel)
+        {
+            QueryEditorTabs.Remove(editorTabViewModel);
         }
 
         private void setInputElementsVisiblity(ProfilerExecuterType profilerExecuterType)

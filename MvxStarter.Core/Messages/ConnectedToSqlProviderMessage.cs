@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace MvxStarter.Core.Messages
 {
-    public class LoadedDatabasesMessage : MvxMessage
+    public class ConnectedToSqlProviderMessage : MvxMessage
     {
-        public LoadedDatabasesMessage(object sender, SqlProvider sqlProvider, List<string> databases, string connectionString)
+        public ConnectedToSqlProviderMessage(object sender, SqlProvider sqlProvider, List<string> databases, string connectionString)
             : base(sender)
         {
             Databases = databases;

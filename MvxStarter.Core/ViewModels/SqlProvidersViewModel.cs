@@ -1,22 +1,27 @@
-﻿using MvvmCross.Plugin.Messenger;
+﻿using MvvmCross;
+using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Messages;
 using MvxStarter.Core.Models;
 using MvxStarter.Core.Services;
+using MvxStarter.Core.ViewModels.ConnectionParamsViewModels;
+using QueryPerformanceMaster.Domain.SqlProviders;
 using System.Collections.ObjectModel;
 
 namespace MvxStarter.Core.ViewModels
 {
     public class SqlProvidersViewModel : MvxViewModel
     {
-        private readonly MvxSubscriptionToken _loadedDatabasesToken;
+        private readonly MvxSubscriptionToken _connectedToSqlProviderToken;
         private readonly ISqlProviderManager _sqlProviderManager;
 
         public SqlProvidersViewModel(ISqlProviderManager sqlProviderManager,
             IMvxMessenger mvxMessenger)
         {
             _sqlProviderManager = sqlProviderManager;
-            _loadedDatabasesToken = mvxMessenger.Subscribe<LoadedDatabasesMessage>(OnLoadedDatabases);
+            _connectedToSqlProviderToken = mvxMessenger.Subscribe<ConnectedToSqlProviderMessage>(OnConnectedToSqlProvider);
         }
 
         private ObservableCollection<SqlProviderModel> _sqlProviderModels;
@@ -33,7 +38,7 @@ namespace MvxStarter.Core.ViewModels
             SqlProviderModels = new ObservableCollection<SqlProviderModel>(_sqlProviderManager.GetSqlProviders());
         }
 
-        public void OnLoadedDatabases(LoadedDatabasesMessage message)
+        private void OnConnectedToSqlProvider(ConnectedToSqlProviderMessage message)
         {
             var sqlProvider = SqlProviderModels.FirstOrDefault(x => x.SqlProvider == message.SqlProvider);
             if (sqlProvider != null)

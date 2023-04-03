@@ -70,12 +70,12 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
             {
                 sqlConnection = await connectionProvider.CreateConnection(cancellationToken);
 
-                using var statCommand = sqlConnection.CreateCommand();
+                await using var statCommand = sqlConnection.CreateCommand();
                 statCommand.CommandText = _statisticsCommand;
                 statCommand.Connection.InfoMessage += infoMessageHandler;
                 await statCommand.ExecuteNonQueryAsync(cancellationToken);
 
-                using var cmd = sqlConnection.CreateCommand();
+                await using var cmd = sqlConnection.CreateCommand();
                 cmd.CommandText = query;
 
                 sw.Start();

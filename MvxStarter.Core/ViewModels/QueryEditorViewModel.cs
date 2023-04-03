@@ -22,28 +22,40 @@ namespace MvxStarter.Core.ViewModels
         private readonly IConnectionService _connectionService;
         private readonly IMvxNavigationService _navManager;
         private readonly IMapper _mapper;
+        private CancellationTokenSource _runLoadCancellationToken;
 
         public QueryEditorViewModel(IMvxMessenger mvxMessenger,
             IProfilerExecuterService queryExecuterService, IConnectionService connectionService,
             IMvxNavigationService navManager, IMapper mapper)
         {
+            // subscribe to events
             _addedQueryEditorTabToken = mvxMessenger.Subscribe<AddedQueryEditorTabMessage>(OnAddedQueryEditorTab);
             _closedQueryEditorTabToken = mvxMessenger.Subscribe<ClosedQueryEditorTabMessage>(CloseEditorTab);
             _loadedDatabasesToken = mvxMessenger.Subscribe<ConnectedToSqlProviderMessage>(OnConnectedToSqlProvider);
+
+            // init commands
             RunQueryCommand = new MvxCommand(async () => await RunQueryAsync());
+            CancelQueryLoadCommand = new MvxCommand(() => CancelQueryLoad());
+
+            // init services
+            _navManager = navManager;
+            _mapper = mapper;
             _mvxMessenger = mvxMessenger;
             _queryExecuterService = queryExecuterService;
             _connectionService = connectionService;
-            _navManager = navManager;
-            _mapper = mapper;
+
+            // init controls
             IterationNumber = new TemplateNumericUpDown();
             ThreadNumber = new TemplateNumericUpDown();
             DelayTime = new TemplateNumericUpDown();
             TimeLimit = new TemplateNumericUpDown();
+
             ProfilerExecuterType = ProfilerExecuterType.SequentialExecutor;
         }
 
         public IMvxCommand RunQueryCommand { get; set; }
+
+        public IMvxCommand CancelQueryLoadCommand { get; set; }
 
 
         private ObservableCollection<QueryEditorTabViewModel> _queryEditorTabs;
@@ -184,6 +196,8 @@ namespace MvxStarter.Core.ViewModels
                     connectionString = _connectionService.SetPoolSizeToConnectionString(activeQueryEditorTab.SqlProvider, connectionString, ThreadNumber.NumValue);
                 }
 
+                _runLoadCancellationToken = new CancellationTokenSource();
+
                 var results = await _queryExecuterService.ExecuteLoadAsync(ProfilerExecuterType, 
                     new ExecuteLoadParmas 
                     { 
@@ -197,7 +211,7 @@ namespace MvxStarter.Core.ViewModels
                         ThreadNumber = ThreadNumber.NumValue,
                         DelayMiliseconds = DelayTime.NumValue,
                         TimeLimitMiliseconds = TimeLimit.NumValue
-                    });
+                    }, _runLoadCancellationToken.Token);
 
                 if(results != null)
                 {
@@ -205,6 +219,11 @@ namespace MvxStarter.Core.ViewModels
                     await _navManager.Navigate(loadResultsViewModel);
                 }
             }
+        }
+
+        private void CancelQueryLoad()
+        {
+            _runLoadCancellationToken?.Cancel();
         }
 
         private void CloseEditorTab(ClosedQueryEditorTabMessage closedQueryEditorTab)

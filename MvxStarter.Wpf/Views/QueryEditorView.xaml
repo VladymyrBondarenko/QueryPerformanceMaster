@@ -211,6 +211,32 @@
                         </Style>
                     </Button.Resources>
                 </Button>
+
+                <Button Grid.Row="3" Grid.Column="1" Content="Cancel" Command="{Binding CancelQueryLoadCommand}" Width="70" Height="25" HorizontalAlignment="Left"
+                        Foreground="White">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="#FF673AB7"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}" BorderBrush="#272537" BorderThickness="1">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF403D50"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </Grid>
         </GroupBox>
     </Grid>

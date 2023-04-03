@@ -48,7 +48,7 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
             {
                 sqlConnection = await connectionProvider.CreateConnection(cancellationToken);
 
-                using var cmd = sqlConnection.CreateCommand();
+                await using var cmd = sqlConnection.CreateCommand();
                 cmd.CommandText = string.Concat(_statisticsCommand, " ", query);
 
                 sw.Start();

@@ -10,7 +10,7 @@
              xmlns:core="clr-namespace:MvxStarter.Core.Models;assembly=MvxStarter.Core" 
              xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" 
              d:DataContext="{d:DesignInstance Type=viewmodels:MainLoadViewModel}"
-             mc:Ignorable="d" Height="560" Width="1029">
+             mc:Ignorable="d" Height="600" Width="1029">
     <Border Background="#272537" CornerRadius="20">
         <Grid>
             <local:SqlProvidersView DataContext="{Binding SqlProviderViewModel, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />

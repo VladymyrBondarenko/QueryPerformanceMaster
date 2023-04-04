@@ -60,7 +60,7 @@ namespace QueryPerformanceMaster.Core.Tests.ProfilerExecuters
             var execTask = Task.Run(async () =>
             {
                 await Task.Delay(100);
-                loadResult = await _sequentialProfilerExecuter.ExecuteLoadAsync(cmd, iterationNumber, cts.Token);
+                loadResult = await _sequentialProfilerExecuter.ExecuteLoadAsync(cmd, iterationNumber, cancellationToken: cts.Token);
             });
             var cancelTask = Task.Run(() => 
             {

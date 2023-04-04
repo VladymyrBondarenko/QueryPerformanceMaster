@@ -5,6 +5,6 @@ namespace QueryPerformanceMaster.App.Interfaces.LoadExecuters
     public interface IParallelProfilerExecuter
     {
         Task<LoadExecutedResult> ExecuteLoadAsync(string query, int threadNumber, int iterationNumber,
-            CancellationToken cancellationToken = default);
+            IProgress<int>? queryLoadProgress = null, CancellationToken cancellationToken = default);
     }
 }

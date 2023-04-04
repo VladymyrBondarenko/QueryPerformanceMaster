@@ -15,14 +15,14 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.ParallelProfilerExecuter
         }
 
         public async Task<LoadExecutedResult> ExecuteLoadAsync(string query, int threadNumber, int iterationNumber,
-            CancellationToken cancellationToken = default)
+            IProgress<int> queryLoadProgress = null, CancellationToken cancellationToken = default)
         {
             var tasks = new List<Task<List<LoadProfilerResult>>>();
 
-            for (int i = 0; i < threadNumber; i++)
+            for (int i = 1; i <= threadNumber; i++)
             {
-                tasks.Add(ExecuteQueryLoad(query,
-                    iterationNumber, cancellationToken));
+                tasks.Add(ExecuteQueryLoad(query, iterationNumber,
+                    threadNumber * iterationNumber, cancellationToken, queryLoadProgress));
             }
 
             var completedTasks = await Task.WhenAll(tasks);
@@ -31,12 +31,15 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.ParallelProfilerExecuter
             return ProfilerExecuterHelpers.FillLoadExecutedResult(loadProfilerResult.Count, loadProfilerResult);
         }
 
+        private int _currentLoadProgress;
         private async Task<List<LoadProfilerResult>> ExecuteQueryLoad(string query, int iterationNumber,
-            CancellationToken cancellationToken)
+            int finalIterationNumber, CancellationToken cancellationToken, IProgress<int> queryLoadProgress = null)
         {
             var loadProfilerResult = new List<LoadProfilerResult>();
             for (int i = 1; i <= iterationNumber; i++)
             {
+                queryLoadProgress?.Report((++_currentLoadProgress * 100) / finalIterationNumber);
+
                 var loadResult = await _loadProfiler.ExecuteQueryLoadAsync(query, cancellationToken);
                 loadProfilerResult.Add(loadResult);
 

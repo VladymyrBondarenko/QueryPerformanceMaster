@@ -14,6 +14,7 @@ namespace MvxStarter.Core.ViewModels
 {
     public class QueryEditorViewModel : MvxViewModel
     {
+        private IProgress<int> _queryLoadProgress;
         private readonly MvxSubscriptionToken _addedQueryEditorTabToken;
         private readonly MvxSubscriptionToken _closedQueryEditorTabToken;
         private readonly MvxSubscriptionToken _loadedDatabasesToken;
@@ -32,6 +33,12 @@ namespace MvxStarter.Core.ViewModels
             _addedQueryEditorTabToken = mvxMessenger.Subscribe<AddedQueryEditorTabMessage>(OnAddedQueryEditorTab);
             _closedQueryEditorTabToken = mvxMessenger.Subscribe<ClosedQueryEditorTabMessage>(CloseEditorTab);
             _loadedDatabasesToken = mvxMessenger.Subscribe<ConnectedToSqlProviderMessage>(OnConnectedToSqlProvider);
+
+            // init worker
+            _queryLoadProgress = new Progress<int>(percent =>
+            {
+                QueryLoadProgress = percent;
+            });
 
             // init commands
             RunQueryCommand = new MvxCommand(async () => await RunQueryAsync());
@@ -85,6 +92,13 @@ namespace MvxStarter.Core.ViewModels
 
                 SetProperty(ref _profilerExecuterType, value);
             }
+        }
+
+        private int _loadProgress;
+        public int QueryLoadProgress
+        {
+            get { return _loadProgress; }
+            set { SetProperty(ref _loadProgress, value); }
         }
 
         private TemplateNumericUpDown _iterationNumber;
@@ -199,7 +213,7 @@ namespace MvxStarter.Core.ViewModels
                 _runLoadCancellationToken = new CancellationTokenSource();
 
                 var results = await _queryExecuterService.ExecuteLoadAsync(ProfilerExecuterType, 
-                    new ExecuteLoadParmas 
+                    new ExecuteLoadParams 
                     { 
                         ConnectionParams = new SqlConnectionParams
                         {
@@ -210,7 +224,8 @@ namespace MvxStarter.Core.ViewModels
                         IterationNumber = IterationNumber.NumValue,
                         ThreadNumber = ThreadNumber.NumValue,
                         DelayMiliseconds = DelayTime.NumValue,
-                        TimeLimitMiliseconds = TimeLimit.NumValue
+                        TimeLimitMiliseconds = TimeLimit.NumValue,
+                        QueryLoadProgress = _queryLoadProgress
                     }, _runLoadCancellationToken.Token);
 
                 if(results != null)
@@ -218,6 +233,8 @@ namespace MvxStarter.Core.ViewModels
                     var loadResultsViewModel = _mapper.Map<LoadResultsViewModel>(results);
                     await _navManager.Navigate(loadResultsViewModel);
                 }
+
+                QueryLoadProgress = 0;
             }
         }
 

@@ -15,12 +15,14 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecut
         }
 
         public async Task<LoadExecutedResult> ExecuteLoadAsync(string query, int iterationNumber, int delayMiliseconds,
-            CancellationToken cancellationToken = default)
+            IProgress<int> queryLoadProgress = null, CancellationToken cancellationToken = default)
         {
             var loadProfilerResult = new List<LoadProfilerResult>();
 
             for (int i = 1; i <= iterationNumber; i++)
             {
+                queryLoadProgress?.Report((i * 100) / iterationNumber);
+
                 await Task.Delay(delayMiliseconds, cancellationToken);
                 var loadResult = await _loadProfiler.ExecuteQueryLoadAsync(query, cancellationToken);
                 loadProfilerResult.Add(loadResult);

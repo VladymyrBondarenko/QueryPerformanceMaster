@@ -1,6 +1,6 @@
 ﻿namespace QueryPerformanceMaster.Domain
 {
-    public class ExecuteLoadParmas
+    public class ExecuteLoadParams
     {
         public int IterationNumber { get; set; }
 
@@ -13,5 +13,7 @@
         public SqlConnectionParams ConnectionParams { get; set; }
 
         public string Query { get; set; }
+
+        public IProgress<int> QueryLoadProgress { get; set; }
     }
 }

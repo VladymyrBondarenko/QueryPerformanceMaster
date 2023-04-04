@@ -62,7 +62,7 @@ namespace QueryPerformanceMaster.Core.UnitTests.ProfilerExecuters
             var execTask = Task.Run(async () => 
             {
                 await Task.Delay(100);
-                loadResult = await _parallelProfilerExecuter.ExecuteLoadAsync(cmd, threadNumber, iterationNumber, cts.Token);
+                loadResult = await _parallelProfilerExecuter.ExecuteLoadAsync(cmd, threadNumber, iterationNumber, cancellationToken: cts.Token);
             });
             var cancelTask = Task.Run(() =>
             {

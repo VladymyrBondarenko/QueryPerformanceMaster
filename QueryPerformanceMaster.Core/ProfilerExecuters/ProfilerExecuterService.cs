@@ -27,7 +27,7 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
             _sequentialExecuterWithTimeLimitFactory = sequentialExecuterWithTimeLimitFactory;
         }
 
-        public async Task<LoadExecutedResult> ExecuteLoadAsync(ProfilerExecuterType executerType, ExecuteLoadParmas executeLoadParmas,
+        public async Task<LoadExecutedResult> ExecuteLoadAsync(ProfilerExecuterType executerType, ExecuteLoadParams executeLoadParmas,
             CancellationToken cancellationToken = default)
         {
             LoadExecutedResult res = null;
@@ -39,21 +39,22 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
                 case ProfilerExecuterType.ParallerExecutor:
                     var parallelExecuter = _profilerExecuterFactory.GetProfilerExecuter(loadProfiler);
                     res = await parallelExecuter.ExecuteLoadAsync(
-                        executeLoadParmas.Query, executeLoadParmas.ThreadNumber, executeLoadParmas.IterationNumber, cancellationToken);
+                        executeLoadParmas.Query, executeLoadParmas.ThreadNumber, executeLoadParmas.IterationNumber, executeLoadParmas.QueryLoadProgress, cancellationToken);
                     break;
                 case ProfilerExecuterType.SequentialExecutor:
                     var seqExecuter = _sequentialExecuterFactory.GetProfilerExecuter(loadProfiler);
-                    res = await seqExecuter.ExecuteLoadAsync(executeLoadParmas.Query, executeLoadParmas.IterationNumber, cancellationToken);
+                    res = await seqExecuter.ExecuteLoadAsync(executeLoadParmas.Query, executeLoadParmas.IterationNumber, 
+                        executeLoadParmas.QueryLoadProgress, cancellationToken);
                     break;
                 case ProfilerExecuterType.SequentialExecutorWithDelay:
                     var seqExecuterWithDelay = _sequentialExecuterWithDelayFactory.GetProfilerExecuter(loadProfiler);
                     res = await seqExecuterWithDelay.ExecuteLoadAsync(
-                        executeLoadParmas.Query, executeLoadParmas.IterationNumber, executeLoadParmas.DelayMiliseconds, cancellationToken);
+                        executeLoadParmas.Query, executeLoadParmas.IterationNumber, executeLoadParmas.DelayMiliseconds, executeLoadParmas.QueryLoadProgress, cancellationToken);
                     break;
                 case ProfilerExecuterType.SequentialExecutorWithTimeLimit:
                     var seqExecuterWithTimeLimit = _sequentialExecuterWithTimeLimitFactory.GetProfilerExecuter(loadProfiler);
                     res = await seqExecuterWithTimeLimit.ExecuteLoadAsync(
-                        executeLoadParmas.Query, executeLoadParmas.IterationNumber, executeLoadParmas.TimeLimitMiliseconds, cancellationToken);
+                        executeLoadParmas.Query, executeLoadParmas.IterationNumber, executeLoadParmas.TimeLimitMiliseconds, executeLoadParmas.QueryLoadProgress, cancellationToken);
                     break;
             }
 

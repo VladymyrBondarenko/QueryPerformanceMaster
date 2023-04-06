@@ -1,4 +1,7 @@
-﻿using MvvmCross.Platforms.Wpf.Views;
+﻿using MvvmCross;
+using MvvmCross.Platforms.Wpf.Views;
+using MvvmCross.Plugin.Messenger;
+using MvxStarter.Core.Messages;
 using System.Windows.Input;
 
 namespace MvxStarter.Wpf
@@ -8,9 +11,17 @@ namespace MvxStarter.Wpf
     /// </summary>
     public partial class MainWindow : MvxWindow
     {
+        private MvxSubscriptionToken? _mvxSubscriptionToken;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            var messanger = Mvx.IoCProvider.Resolve<IMvxMessenger>();
+            _mvxSubscriptionToken = messanger.Subscribe<CollapseWindowMessage>((e) =>
+            {
+                WindowState = System.Windows.WindowState.Minimized;
+            });
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)

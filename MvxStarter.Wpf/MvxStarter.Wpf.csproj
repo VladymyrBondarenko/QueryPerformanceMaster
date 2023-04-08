@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>wwwroot\Icons\favicon.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,7 +38,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="MvvmCross.Platforms.Wpf" Version="9.0.9" />
     <PackageReference Include="MvvmCross.Plugin.Messenger" Version="9.0.9" />
-    <PackageReference Include="ScottPlot.WPF" Version="4.1.61" />
+    <PackageReference Include="ScottPlot.WPF" Version="4.1.62" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
   </ItemGroup>

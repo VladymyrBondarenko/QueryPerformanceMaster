@@ -114,9 +114,10 @@ namespace MvxStarter.Core.Services
                 case SqlProvider.SqlServer:
                     iconPath = "pack://application:,,,/wwwroot/Icons/SqlServerIcon.png";
                     break;
-                case SqlProvider.Oracle:
-                    iconPath = "pack://application:,,,/wwwroot/Icons/OracleIcon.png";
-                    break;
+                // TODO: commented for now, bring back after implementing query stress for Oracle
+                //case SqlProvider.Oracle:
+                //    iconPath = "pack://application:,,,/wwwroot/Icons/OracleIcon.png";
+                //    break;
             }
             return iconPath;
         }

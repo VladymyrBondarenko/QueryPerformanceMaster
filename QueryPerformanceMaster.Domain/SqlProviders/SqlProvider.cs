@@ -3,7 +3,7 @@
     public enum SqlProvider
     {
         SqlServer,
-        Oracle,
-        PostgreSql
+        PostgreSql,
+        // Oracle TODO: commented for now, bring back after implementing query stress for Oracle
     }
 }

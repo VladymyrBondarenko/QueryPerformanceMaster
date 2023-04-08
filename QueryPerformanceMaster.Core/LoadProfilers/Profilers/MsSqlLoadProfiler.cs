@@ -48,7 +48,7 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
 
                     if (matches.Length > 1)
                     {
-                        sqlQueryLoadResult.LogicalReads = Convert.ToInt32(matches[2], CultureInfo.InvariantCulture);
+                        sqlQueryLoadResult.LogicalReads += Convert.ToInt32(matches[2], CultureInfo.InvariantCulture);
                         continue;
                     }
 
@@ -56,8 +56,8 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
 
                     if (matches.Length > 1)
                     {
-                        sqlQueryLoadResult.CpuTime = Convert.ToInt32(matches[1], CultureInfo.InvariantCulture);
-                        sqlQueryLoadResult.ElapsedTime = Convert.ToInt32(matches[2], CultureInfo.InvariantCulture);
+                        sqlQueryLoadResult.CpuTime += Convert.ToInt32(matches[1], CultureInfo.InvariantCulture);
+                        sqlQueryLoadResult.ElapsedTime += Convert.ToInt32(matches[2], CultureInfo.InvariantCulture);
                     }
                 }
             };

@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using MathNet.Numerics;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Messages;
 using MvxStarter.Core.Services;
+using MvxStarter.Core.ViewModels.Controls;
 using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
 using QueryPerformanceMaster.App.Interfaces.LoadExecuters;
+using ScottPlot;
 
 namespace MvxStarter.Core.ViewModels
 {

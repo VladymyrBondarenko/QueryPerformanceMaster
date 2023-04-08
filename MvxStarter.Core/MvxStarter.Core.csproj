@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="MvvmCross" Version="9.0.9" />
     <PackageReference Include="MvvmCross.Plugin.Messenger" Version="9.0.9" />
+    <PackageReference Include="ScottPlot" Version="4.1.62" />
   </ItemGroup>
 
   <ItemGroup>

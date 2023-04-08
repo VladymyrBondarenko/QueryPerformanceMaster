@@ -63,14 +63,14 @@ namespace QueryPerformanceMaster.Core.LoadProfilers.Profilers
                     var matches = _queryTimes.Split(queryPlanRow);
                     if (matches.Length > 1)
                     {
-                        sqlQueryLoadResult.ElapsedTime = Convert.ToDouble(matches[1], CultureInfo.InvariantCulture);
+                        sqlQueryLoadResult.ElapsedTime += Convert.ToDouble(matches[1], CultureInfo.InvariantCulture);
                         continue;
                     }
 
                     matches = _queryLogicalReads.Split(queryPlanRow);
                     if (matches.Length > 1)
                     {
-                        sqlQueryLoadResult.LogicalReads = Convert.ToDouble(matches[1], CultureInfo.InvariantCulture);
+                        sqlQueryLoadResult.LogicalReads += Convert.ToDouble(matches[1], CultureInfo.InvariantCulture);
                         continue;
                     }
                 }

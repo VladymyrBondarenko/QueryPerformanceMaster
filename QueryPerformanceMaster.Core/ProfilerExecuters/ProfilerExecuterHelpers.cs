@@ -15,16 +15,15 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
             {
                 return res;
             }
-
-            var cpuTimes = loadProfilerResults.Select(x => x.CpuTime / 1000d).ToList();
-            var logicalReads = loadProfilerResults.Select(x => x.LogicalReads).ToList();
-            var elapsedTimes = loadProfilerResults.Select(x => x.ElapsedTime / 1000d).ToList();
-            var execTimes = loadProfilerResults.Select(x => x.ExecTime).ToList();
+            
+            res.CpuTimes = loadProfilerResults.Select(x => x.CpuTime / 1000d).ToList();
+            res.LogicalReads = loadProfilerResults.Select(x => x.LogicalReads).ToList();
+            res.ElapsedTimes = loadProfilerResults.Select(x => x.ElapsedTime / 1000d).ToList();
 
             //calc total
-            res.CpuTimeTotal = Math.Round((decimal)cpuTimes.Sum(), 4);
-            res.LogicalReadsTotal = Math.Round((decimal)logicalReads.Sum(), 4);
-            res.ElapsedTimeTotal = Math.Round((decimal)elapsedTimes.Sum(), 4);
+            res.CpuTimeTotal = Math.Round((decimal)res.CpuTimes.Sum(), 4);
+            res.LogicalReadsTotal = Math.Round((decimal)res.LogicalReads.Sum(), 4);
+            res.ElapsedTimeTotal = Math.Round((decimal)res.ElapsedTimes.Sum(), 4);
 
             foreach (var result in loadProfilerResults)
             {
@@ -38,16 +37,16 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
             res.ExecTimeAvg = res.ExecTime / iterationNumber;
 
             // calc mod
-            var execTimeMiliseconds = execTimes.Select(x => x.TotalMilliseconds).ToList();
-            res.CpuTimeMod = Math.Round((decimal)cpuTimes.Median(), 4);
-            res.LogicalReadsMod = Math.Round((decimal)logicalReads.Median(), 4);
-            res.ElapsedTimeMod = Math.Round((decimal)elapsedTimes.Median(), 4);
+            var execTimeMiliseconds = loadProfilerResults.Select(x => x.ExecTime.TotalMilliseconds).ToList();
+            res.CpuTimeMod = Math.Round((decimal)res.CpuTimes.Median(), 4);
+            res.LogicalReadsMod = Math.Round((decimal)res.LogicalReads.Median(), 4);
+            res.ElapsedTimeMod = Math.Round((decimal)res.ElapsedTimes.Median(), 4);
             res.ExecTimeMod = TimeSpan.FromMilliseconds(execTimeMiliseconds.Median());
 
             // calc standard dev
-            res.CpuTimeStdDev = cpuTimes.Count > 1 ? Math.Round((decimal)cpuTimes.StandardDeviation(), 4) : 0;
-            res.LogicalReadsStdDev = logicalReads.Count > 1 ? Math.Round((decimal)logicalReads.StandardDeviation(), 4) : 0;
-            res.ElapsedTimeStdDev = elapsedTimes.Count > 1 ? Math.Round((decimal)elapsedTimes.StandardDeviation(), 4) : 0;
+            res.CpuTimeStdDev = res.CpuTimes.Count > 1 ? Math.Round((decimal)res.CpuTimes.StandardDeviation(), 4) : 0;
+            res.LogicalReadsStdDev = res.LogicalReads.Count > 1 ? Math.Round((decimal)res.LogicalReads.StandardDeviation(), 4) : 0;
+            res.ElapsedTimeStdDev = res.ElapsedTimes.Count > 1 ? Math.Round((decimal)res.ElapsedTimes.StandardDeviation(), 4) : 0;
             res.ExecTimeStdDev = execTimeMiliseconds.Count > 1 ? 
                 TimeSpan.FromMilliseconds(execTimeMiliseconds.StandardDeviation()) : TimeSpan.FromMilliseconds(0);
 

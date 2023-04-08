@@ -2,6 +2,7 @@
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.Plugin.Messenger;
 using MvxStarter.Core.Messages;
+using ScottPlot;
 using System.Windows.Input;
 
 namespace MvxStarter.Wpf

@@ -1,7 +1,10 @@
-﻿using MvvmCross;
+﻿using MathNet.Numerics;
+using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
+using MvxStarter.Core.Messages;
 using QueryPerformanceMaster.Domain.LoadResults;
 
 namespace MvxStarter.Core.ViewModels
@@ -15,6 +18,45 @@ namespace MvxStarter.Core.ViewModels
             CloseWindowCommand = new MvxCommand(async () => await CloseWindow());
             ViewErrorsCommand = new MvxCommand(async () => await ViewErrors());
             _navManager = Mvx.IoCProvider.Resolve<IMvxNavigationService>();
+        }
+
+        private int _tabControlSelectedIndex;
+
+        public int TabControlSelectedIndex
+        {
+            get { return _tabControlSelectedIndex; }
+            set 
+            { 
+                if(value == 1)
+                {
+                    InitElapsedTimePlot();
+                    InitCpuTimePlot();
+                    InitLogicalReadsPlot();
+                }
+
+                _tabControlSelectedIndex = value; 
+            }
+        }
+
+        private List<double> _elapsedTimes;
+        public List<double> ElapsedTimes 
+        {
+            get => _elapsedTimes;
+            set => SetProperty(ref _elapsedTimes, value);
+        }
+
+        private List<double> _cpuTimes;
+        public List<double> CpuTimes
+        {
+            get => _cpuTimes;
+            set => SetProperty(ref _cpuTimes, value);
+        }
+
+        private List<double> _logicalReads;
+        public List<double> LogicalReads
+        {
+            get => _logicalReads;
+            set => SetProperty(ref _logicalReads, value);
         }
 
         private decimal _cpuTimeTotal;
@@ -77,6 +119,27 @@ namespace MvxStarter.Core.ViewModels
             {
                 await _navManager.Navigate(new LoadErrorsViewModel { SqlQueryLoadErrors = SqlQueryLoadErrors });
             }
+        }
+
+        public void InitElapsedTimePlot()
+        {
+            var mvxMessenger = Mvx.IoCProvider.Resolve<IMvxMessenger>();
+            mvxMessenger.Publish(new InitElapsedTimePlotMessage(this,
+                Enumerable.Range(1, IterationCompleted).Select(x => Convert.ToDouble(x)).ToArray(), ElapsedTimes.ToArray()));
+        }
+
+        public void InitCpuTimePlot()
+        {
+            var mvxMessenger = Mvx.IoCProvider.Resolve<IMvxMessenger>();
+            mvxMessenger.Publish(new InitCpuTimePlotMessage(this,
+                Enumerable.Range(1, IterationCompleted).Select(x => Convert.ToDouble(x)).ToArray(), CpuTimes.ToArray()));
+        }
+
+        public void InitLogicalReadsPlot()
+        {
+            var mvxMessenger = Mvx.IoCProvider.Resolve<IMvxMessenger>();
+            mvxMessenger.Publish(new InitLogicalReadsPlotMessage(this,
+                Enumerable.Range(1, IterationCompleted).Select(x => Convert.ToDouble(x)).ToArray(), LogicalReads.ToArray()));
         }
     }
 }

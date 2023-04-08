@@ -7,12 +7,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MvxStarter.Wpf.Views"
+             xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
              xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core"
              d:DataContext="{d:DesignInstance Type={x:Type viewmodels:LoadResultsViewModel}}"
-             mc:Ignorable="d" Height="720" Width="498">
+             mc:Ignorable="d" Height="720" Width="494">
     <Border Background="#272537" CornerRadius="20" Height="716" VerticalAlignment="Center">
         <Grid Margin="0,0,10,24">
-            <TabControl Background="#FF17161F"
+            <TabControl Background="#FF17161F" SelectedIndex="{Binding TabControlSelectedIndex}"
                 TabStripPlacement="Top" BorderBrush="#272537" Margin="10,19,0,0" HorizontalAlignment="Left" Width="474">
 
                 <TabControl.Resources>
@@ -358,12 +359,40 @@
                         </GroupBox>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Graphs" Foreground="White">
-                    <Grid Background="#FF17161F"/>
+                
+                <TabItem Header="Charts" Foreground="White">
+                    <Grid Background="#FF17161F">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="210"/>
+                            <RowDefinition Height="210"/>
+                            <RowDefinition Height="210"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Header="Elapsed Time (Seconds)" Margin="5,5,5,5" Grid.Row="0" BorderBrush="#FF17161F" BorderThickness="1">
+                            <Grid>
+                                <WpfPlot Name="ElapsedTimePlot" Margin="5 5 5 5" />
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="Cpu Time (Seconds)" Margin="5,5,5,5" Grid.Row="1" BorderBrush="#FF17161F" BorderThickness="1">
+                            <Grid>
+                                <WpfPlot Name="CpuTimePlot" Margin="5 5 5 5" />
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="Logical Reads" Margin="5,5,5,5" Grid.Row="2" BorderBrush="#FF17161F" BorderThickness="1">
+                            <Grid>
+                                <WpfPlot Name="LogicalReadsPlot" Margin="5 5 5 5" />
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
                 </TabItem>
             </TabControl>
 
-            <Button Command="{Binding CloseWindowCommand}" Content="X" FontSize="15" Foreground="White" HorizontalAlignment="Left" Margin="466,0,0,0" VerticalAlignment="Top" Height="22" Width="18">
+            <Button Command="{Binding CloseWindowCommand}" Content="X" FontSize="15" Foreground="White" HorizontalAlignment="Left" Margin="460,2,0,0" VerticalAlignment="Top" Height="22" Width="18">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3"/>

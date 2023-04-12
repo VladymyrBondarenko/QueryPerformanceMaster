@@ -5,11 +5,12 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>wwwroot\Icons\favicon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <ApplicationIcon>wwwroot\Icons\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\SQL.xshd" />
     <None Remove="wwwroot\Icons\close-tab.png" />
     <None Remove="wwwroot\Icons\MssqlIcon.png" />
     <None Remove="wwwroot\Icons\OracleIcon.png" />
@@ -34,11 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="MvvmCross.Platforms.Wpf" Version="9.0.9" />
     <PackageReference Include="MvvmCross.Plugin.Messenger" Version="9.0.9" />
-    <PackageReference Include="ScottPlot.WPF" Version="4.1.62" />
+    <PackageReference Include="ScottPlot.WPF" Version="4.1.63" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
   </ItemGroup>
@@ -48,7 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <EmbeddedResource Include="Resources\SQL.xshd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

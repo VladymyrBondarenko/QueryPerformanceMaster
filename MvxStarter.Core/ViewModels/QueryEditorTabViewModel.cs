@@ -2,6 +2,7 @@
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Messages;
+using MvxStarter.Core.ViewModels.Controls;
 using QueryPerformanceMaster.Domain.SqlProviders;
 
 namespace MvxStarter.Core.ViewModels
@@ -15,21 +16,17 @@ namespace MvxStarter.Core.ViewModels
         {
             CloseEditorTabCommand = new MvxCommand(() => CloseEditorTab());
             _mvxMessenger = mvxMessenger;
+            QueryEditorControl = new QueryEditorControlViewModel();
         }
 
         public string TabTitle { get; set; }
 
-        private string _queryEditorContent;
-        public string QueryEditorContent
+        private QueryEditorControlViewModel _queryEditorControl;
+
+        public QueryEditorControlViewModel QueryEditorControl
         {
-            get
-            {
-                return _queryEditorContent;
-            }
-            set
-            {
-                SetProperty(ref _queryEditorContent, value);
-            }
+            get { return _queryEditorControl; }
+            set { SetProperty(ref _queryEditorControl, value); }
         }
 
         public SqlProvider SqlProvider { get; set; }

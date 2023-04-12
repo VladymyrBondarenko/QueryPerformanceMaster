@@ -1,4 +1,4 @@
-﻿<views:MvxWpfView
+﻿<views:MvxWpfView xmlns:Controls="clr-namespace:MvxStarter.Wpf.Controls" 
     xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
     xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Binding;assembly=MvvmCross.Platforms.Wpf"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -6,8 +6,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MvxStarter.Wpf.Views"
-             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" xmlns:UserControlTemplate="clr-namespace:UserControlTemplate"
-             x:Class="MvxStarter.Wpf.Views.QueryEditorView"
+             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels;assembly=MvxStarter.Core" 
+             xmlns:UserControlTemplate="clr-namespace:MvxStarter.Wpf.Controls"
+                  x:Class="MvxStarter.Wpf.Views.QueryEditorView"
              d:DataContext="{d:DesignInstance Type={x:Type viewmodels:QueryEditorViewModel}}"
                 mc:Ignorable="d" Height="600" Width="1029">
     <views:MvxWpfView.Resources>
@@ -87,7 +89,7 @@
         </Grid.ColumnDefinitions>
 
         <TabControl ItemsSource="{Binding QueryEditorTabs, Mode=TwoWay}" 
-                MinHeight="300" MinWidth="150" Grid.Row="0" Grid.Column="0" Background="#FF17161F"
+                MinHeight="300" MaxHeight="300" MinWidth="150" Grid.Row="0" Grid.Column="0" Background="#FF17161F"
                 TabStripPlacement="Top" Margin="10,19,0,0" BorderBrush="#272537">
 
             <TabControl.Resources>
@@ -213,7 +215,7 @@
 
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding QueryEditorContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="#FF17161F" BorderBrush="Black" Foreground="White" />
+                    <UserControlTemplate:QueryEditorControlView DataContext="{Binding QueryEditorControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

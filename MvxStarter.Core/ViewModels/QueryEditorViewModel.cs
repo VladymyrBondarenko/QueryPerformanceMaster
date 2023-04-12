@@ -201,7 +201,7 @@ namespace MvxStarter.Core.ViewModels
         private async Task RunQueryAsync()
         {
             var activeQueryEditorTab = QueryEditorTabs.FirstOrDefault(x => x.IsSelected);
-            if(activeQueryEditorTab != null && !string.IsNullOrWhiteSpace(activeQueryEditorTab.QueryEditorContent))
+            if(activeQueryEditorTab != null && !string.IsNullOrWhiteSpace(activeQueryEditorTab.QueryEditorControl.QueryEditorContent))
             {
                 var connectionString = activeQueryEditorTab.ConnectionString;
                 if (ThreadNumber.NumValue > 0)
@@ -220,7 +220,7 @@ namespace MvxStarter.Core.ViewModels
                             ConnectionString = connectionString,
                             SqlProvider = activeQueryEditorTab.SqlProvider
                         },
-                        Query = activeQueryEditorTab.QueryEditorContent,
+                        Query = activeQueryEditorTab.QueryEditorControl.QueryEditorContent,
                         IterationNumber = IterationNumber.NumValue,
                         ThreadNumber = ThreadNumber.NumValue,
                         DelayMiliseconds = DelayTime.NumValue,

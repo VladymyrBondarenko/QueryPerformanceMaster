@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace UserControlTemplate
+namespace MvxStarter.Wpf.Controls
 {
     /// <summary>
     /// Interaction logic for TemplateNumericUpDown.xaml

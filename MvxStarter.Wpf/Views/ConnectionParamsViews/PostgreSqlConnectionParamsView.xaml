@@ -7,7 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MvxStarter.Wpf.Views.ConnectionParamsViews"
-             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels.ConnectionParamsViewModels;assembly=MvxStarter.Core" xmlns:UserControlTemplate="clr-namespace:UserControlTemplate" d:DataContext="{d:DesignInstance Type=viewmodels:PostgreSqlConnectionParamsViewModel}" 
+             xmlns:viewmodels="clr-namespace:MvxStarter.Core.ViewModels.ConnectionParamsViewModels;assembly=MvxStarter.Core" xmlns:UserControlTemplate="clr-namespace:MvxStarter.Wpf.Controls" d:DataContext="{d:DesignInstance Type=viewmodels:PostgreSqlConnectionParamsViewModel}" 
              mc:Ignorable="d" 
              Width="340" Height="402">
     <Border Background="#272537" CornerRadius="20" Margin="0,0,0,-74">

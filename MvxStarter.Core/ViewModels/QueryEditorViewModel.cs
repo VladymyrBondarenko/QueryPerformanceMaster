@@ -4,6 +4,7 @@ using MvvmCross.Navigation;
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvxStarter.Core.Messages;
+using MvxStarter.Core.Services;
 using MvxStarter.Core.ViewModels.Controls;
 using QueryPerformanceMaster.App.Interfaces.ConnectionProvider;
 using QueryPerformanceMaster.App.Interfaces.LoadExecuters;
@@ -19,13 +20,14 @@ namespace MvxStarter.Core.ViewModels
         private readonly MvxSubscriptionToken _closedQueryEditorTabToken;
         private readonly MvxSubscriptionToken _loadedDatabasesToken;
         private readonly IMvxMessenger _mvxMessenger;
+        private readonly ISqlProviderManager _sqlProviderManager;
         private readonly IProfilerExecuterService _queryExecuterService;
         private readonly IConnectionService _connectionService;
         private readonly IMvxNavigationService _navManager;
         private readonly IMapper _mapper;
         private CancellationTokenSource _runLoadCancellationToken;
 
-        public QueryEditorViewModel(IMvxMessenger mvxMessenger,
+        public QueryEditorViewModel(IMvxMessenger mvxMessenger, ISqlProviderManager sqlProviderManager,
             IProfilerExecuterService queryExecuterService, IConnectionService connectionService,
             IMvxNavigationService navManager, IMapper mapper)
         {
@@ -48,6 +50,7 @@ namespace MvxStarter.Core.ViewModels
             _navManager = navManager;
             _mapper = mapper;
             _mvxMessenger = mvxMessenger;
+            _sqlProviderManager = sqlProviderManager;
             _queryExecuterService = queryExecuterService;
             _connectionService = connectionService;
 
@@ -154,6 +157,14 @@ namespace MvxStarter.Core.ViewModels
             set { SetProperty(ref _timeLimitVisible, value); }
         }
 
+        private bool _dropBuffersAndCache;
+
+        public bool DropBuffersAndCache
+        {
+            get { return _dropBuffersAndCache; }
+            set { _dropBuffersAndCache = value; }
+        }
+
         public void OnAddedQueryEditorTab(AddedQueryEditorTabMessage message)
         {
             var tabTitle = $"{message.SqlProvider}.{message.Database}";
@@ -211,6 +222,16 @@ namespace MvxStarter.Core.ViewModels
                 }
 
                 _runLoadCancellationToken = new CancellationTokenSource();
+
+                if (DropBuffersAndCache)
+                {
+                    var cleanResult = await _sqlProviderManager.DropBuffersAndCache(activeQueryEditorTab.SqlProvider, connectionString);
+                    if (!cleanResult.Success)
+                    {
+                        _mvxMessenger.Publish(new DropBuffersAndCacheErrorMessage(this, cleanResult.ErrorMessage, "An error occurred while trying to clean up"));
+                        return;
+                    }
+                }
 
                 var results = await _queryExecuterService.ExecuteLoadAsync(ProfilerExecuterType, 
                     new ExecuteLoadParams 

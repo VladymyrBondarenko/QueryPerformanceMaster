@@ -21,7 +21,7 @@ namespace MvxStarter.Core.ViewModels
             IConnectionService connectionService, IMvxNavigationService navManager, IMapper mapper)
         {
             SqlProviderViewModel = new SqlProvidersViewModel(sqlProviderManager, mvxMessenger);
-            QueryEditorViewModel = new QueryEditorViewModel(mvxMessenger, profilerExecuterService, connectionService, navManager, mapper);
+            QueryEditorViewModel = new QueryEditorViewModel(mvxMessenger, sqlProviderManager, profilerExecuterService, connectionService, navManager, mapper);
             _mvxMessenger = mvxMessenger;
             _navManager = navManager;
             CloseWindowCommand = new MvxCommand(async () => await CloseWindow());

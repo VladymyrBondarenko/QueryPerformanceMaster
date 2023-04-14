@@ -48,14 +48,16 @@ namespace MvxStarter.Core.Services
             }).ToList();
         }
 
+        public async Task<DropBuffersAndCacheResult> DropBuffersAndCache(SqlProvider sqlProvider, string connectionString)
+        {
+            var sqlProviderService = getSqlProviderService(sqlProvider, connectionString);
+            return await sqlProviderService.DropBuffersAndCache();
+        }
+
         public async Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync(SqlProvider sqlProvider, string connectionString)
         {
-            var sqlProviderManager = _sqlProviderServiceFactory.GetSqlProviderService(new SqlConnectionParams
-            {
-                SqlProvider = sqlProvider,
-                ConnectionString = connectionString
-            });
-            return await sqlProviderManager.GetSqlProviderDatabasesAsync();
+            var sqlProviderService = getSqlProviderService(sqlProvider, connectionString);
+            return await sqlProviderService.GetSqlProviderDatabasesAsync();
         }
 
         public async Task OpenConnectionParamsView(SqlProvider sqlProvider, string connectionString = null)
@@ -102,6 +104,13 @@ namespace MvxStarter.Core.Services
                     break;
             }
         }
+
+        private ISqlProviderService getSqlProviderService(SqlProvider sqlProvider, string connectionString) =>
+            _sqlProviderServiceFactory.GetSqlProviderService(new SqlConnectionParams
+            {
+                SqlProvider = sqlProvider,
+                ConnectionString = connectionString
+            });
 
         private string getProviderIconPath(SqlProvider sqlProvider)
         {

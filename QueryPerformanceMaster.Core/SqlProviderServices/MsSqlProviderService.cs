@@ -16,6 +16,43 @@ namespace QueryPerformanceMaster.Core.SqlProviderServices
             _connectionString = connectionString;
         }
 
+        public async Task<DropBuffersAndCacheResult> DropBuffersAndCache()
+        {
+            const string query = 
+                @"CHECKPOINT
+                DBCC DROPCLEANBUFFERS
+                DBCC FREEPROCCACHE
+                ";
+
+            var connectionProvider = _connectionProviderFactory.GetConnectionProvider(_connectionString);
+            SqlConnection sqlConnection = null;
+
+            try
+            {
+                sqlConnection = await connectionProvider.CreateConnection();
+                using var cmd = sqlConnection.CreateCommand();
+                cmd.CommandText = query;
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+            catch (Exception ex)
+            {
+                return new DropBuffersAndCacheResult(false)
+                {
+                    ErrorMessage = ex.Message
+                };
+            }
+            finally
+            {
+                if (sqlConnection != null)
+                {
+                    await sqlConnection.CloseAsync();
+                }
+            }
+
+            return new DropBuffersAndCacheResult();
+        }
+
         public async Task<GetProviderDatabasesResult> GetSqlProviderDatabasesAsync()
         {
             const string query = "SELECT databases.name FROM sys.databases WHERE databases.state = 0 ORDER BY databases.name";

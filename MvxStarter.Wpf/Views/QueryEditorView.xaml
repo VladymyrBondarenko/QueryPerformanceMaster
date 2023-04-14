@@ -252,6 +252,10 @@
                     </ComboBox.Resources>
                 </ComboBox>
 
+                <CheckBox IsChecked="{Binding DropBuffersAndCache, Mode=TwoWay}" Grid.ColumnSpan="1" Grid.Row="0" Grid.Column="2" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    Drop buffers and cache before load
+                </CheckBox>
+
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="10,16,10,17">Iterations:</TextBlock>
                 <UserControlTemplate:TemplateNumericUpDown Grid.Row="1" Grid.Column="1" DataContext="{Binding IterationNumber, Mode=TwoWay}" Width="84" HorizontalAlignment="Left" VerticalAlignment="Center" />
 

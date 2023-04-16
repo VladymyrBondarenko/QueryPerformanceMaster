@@ -38,10 +38,10 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters
 
             // calc mod
             var execTimeMiliseconds = loadProfilerResults.Select(x => x.ExecTime.TotalMilliseconds).ToList();
-            res.CpuTimeMod = Math.Round((decimal)res.CpuTimes.Median(), 4);
-            res.LogicalReadsMod = Math.Round((decimal)res.LogicalReads.Median(), 4);
-            res.ElapsedTimeMod = Math.Round((decimal)res.ElapsedTimes.Median(), 4);
-            res.ExecTimeMod = TimeSpan.FromMilliseconds(execTimeMiliseconds.Median());
+            res.CpuTimeMod = res.CpuTimes.Count > 0 ? Math.Round((decimal)res.CpuTimes.Median(), 4) : 0;
+            res.LogicalReadsMod = res.LogicalReads.Count > 0 ? Math.Round((decimal)res.LogicalReads.Median(), 4) : 0;
+            res.ElapsedTimeMod = res.ElapsedTimes.Count > 0 ? Math.Round((decimal)res.ElapsedTimes.Median(), 4) : 0;
+            res.ExecTimeMod = execTimeMiliseconds.Count > 0 ? TimeSpan.FromMilliseconds(execTimeMiliseconds.Median()) : TimeSpan.Zero;
 
             // calc standard dev
             res.CpuTimeStdDev = res.CpuTimes.Count > 1 ? Math.Round((decimal)res.CpuTimes.StandardDeviation(), 4) : 0;

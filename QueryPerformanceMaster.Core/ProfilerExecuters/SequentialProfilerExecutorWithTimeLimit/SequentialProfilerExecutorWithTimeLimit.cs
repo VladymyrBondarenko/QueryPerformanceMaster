@@ -27,17 +27,16 @@ namespace QueryPerformanceMaster.Core.ProfilerExecuters.SequentialProfilerExecut
 
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    loadProfilerResult.Add(loadResult);
                     return ProfilerExecuterHelpers.FillLoadExecutedResult(i, loadProfilerResult);
                 }
+
+                loadProfilerResult.Add(loadResult);
 
                 var elapsedTime = loadProfilerResult.Sum(x => x.ElapsedTime) + loadResult.ElapsedTime;
                 if (elapsedTime >= timeLimitMiliseconds)
                 {
                     return ProfilerExecuterHelpers.FillLoadExecutedResult(i, loadProfilerResult);
                 }
-
-                loadProfilerResult.Add(loadResult);
             }
 
             return ProfilerExecuterHelpers.FillLoadExecutedResult(iterationNumber, loadProfilerResult);
